@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29920.165
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RocketSimulator", "RocketSimulator\RocketSimulator.vcxproj", "{18B19099-6211-4814-BAD5-5490767241E2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTests", "UnitTests\UnitTests.vcxproj", "{626C8670-3664-4B2B-87F8-B84FD70F4D5D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{18B19099-6211-4814-BAD5-5490767241E2}.Release|x64.Build.0 = Release|x64
 		{18B19099-6211-4814-BAD5-5490767241E2}.Release|x86.ActiveCfg = Release|Win32
 		{18B19099-6211-4814-BAD5-5490767241E2}.Release|x86.Build.0 = Release|Win32
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Debug|x64.ActiveCfg = Debug|x64
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Debug|x64.Build.0 = Debug|x64
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Debug|x86.ActiveCfg = Debug|Win32
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Debug|x86.Build.0 = Debug|Win32
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Release|x64.ActiveCfg = Release|x64
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Release|x64.Build.0 = Release|x64
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Release|x86.ActiveCfg = Release|Win32
+		{626C8670-3664-4B2B-87F8-B84FD70F4D5D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
