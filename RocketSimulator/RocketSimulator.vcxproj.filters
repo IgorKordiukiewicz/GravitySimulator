@@ -13,10 +13,34 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\3rdParty">
+      <UniqueIdentifier>{11510e25-4592-4e58-9f81-77d3e76a9769}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\3rdParty\ImGui">
+      <UniqueIdentifier>{65c84877-822f-4ae8-9f2a-24dc4a8a3ff9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui-SFML.cpp">
+      <Filter>Source Files\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui.cpp">
+      <Filter>Source Files\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_demo.cpp">
+      <Filter>Source Files\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_draw.cpp">
+      <Filter>Source Files\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_tables.cpp">
+      <Filter>Source Files\3rdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="3rdParty\ImGui\imgui_widgets.cpp">
+      <Filter>Source Files\3rdParty\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
