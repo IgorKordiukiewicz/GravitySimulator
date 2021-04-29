@@ -19,12 +19,15 @@ void Application::run()
 
 		processEvents();
 
+		universe.update(deltaTime);
+
 		ImGui::SFML::Update(window, sf::seconds(deltaTime));
 
 		window.clear();
 
+		// Render
+		universe.draw(window);
 		ImGui::SFML::Render(window);
-
 		window.display();
 	}
 

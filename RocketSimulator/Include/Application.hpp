@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "../Include/Universe.hpp"
 
 class Application
 {
@@ -15,4 +16,5 @@ private:
 
 private:
 	sf::RenderWindow window;
+	Universe universe;
 };
