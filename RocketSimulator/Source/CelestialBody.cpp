@@ -7,10 +7,10 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	, initialPosition(initialPosition)
 	, initialVelocity(initialVelocity)
 {
-	shape.setRadius(radius);
-	shape.setOrigin({ radius / 2.f, radius / 2.f });
-	shape.setPosition(initialPosition);
-	shape.setFillColor(sf::Color::White);
+	bodyShape.setRadius(radius);
+	bodyShape.setOrigin({ radius / 2.f, radius / 2.f });
+	bodyShape.setPosition(initialPosition);
+	bodyShape.setFillColor(sf::Color::White);
 
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
@@ -18,5 +18,18 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 
 void CelestialBody::draw(sf::RenderWindow& window)
 {
-	window.draw(shape);
+	window.draw(bodyShape);
+}
+
+void CelestialBody::setInitialPosition(const sf::Vector2f& newInitialPosition)
+{
+	initialPosition = newInitialPosition;
+	currentPosition = initialPosition;
+	bodyShape.setPosition(currentPosition);
+}
+
+void CelestialBody::setInitialVelocity(const sf::Vector2f& newInitialVelocity)
+{
+	initialVelocity = newInitialVelocity;
+	currentVelocity = initialVelocity;
 }

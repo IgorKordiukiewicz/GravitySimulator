@@ -12,6 +12,14 @@ public:
 
 	void draw(sf::RenderWindow& window);
 
+	void setInitialPosition(const sf::Vector2f& newInitialPosition);
+	void setInitialVelocity(const sf::Vector2f& newInitialVelocity);
+
+	inline const float getMass() const { return mass; }
+	inline const sf::Vector2f& getCurrentPosition() const { return currentPosition; }
+	inline const sf::Vector2f& getCurrentVelocity() const { return currentVelocity; }
+	inline const sf::CircleShape& getBodyShape() const { return bodyShape; }
+
 private:
 	float mass{ 1.0 };
 	float radius{ 1.0 };
@@ -20,5 +28,5 @@ private:
 	sf::Vector2f currentPosition;
 	sf::Vector2f currentVelocity;
 
-	sf::CircleShape shape;
+	sf::CircleShape bodyShape;
 };

@@ -1,5 +1,7 @@
 #include "../Include/Universe.hpp"
 #include "../Include/CelestialBody.hpp"
+#include <SFML/Graphics.hpp>
+#include <iostream>
 
 Universe::Universe()
 {

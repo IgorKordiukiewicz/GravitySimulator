@@ -1,11 +1,11 @@
 #include "../Include/Application.hpp"
-
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <SFML/Graphics.hpp>
 
 Application::Application()
 	: window(sf::VideoMode(1600, 900), "Rocket Simulator")
+	, editor(window, universe.getCelestialBodies())
 {
 	window.setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(window);
@@ -20,6 +20,7 @@ void Application::run()
 		processEvents();
 
 		universe.update(deltaTime);
+		editor.update();
 
 		ImGui::SFML::Update(window, sf::seconds(deltaTime));
 
