@@ -12,6 +12,8 @@ public:
 	void setStartPos(const sf::Vector2f& newStartPos);
 	void setDirection(const sf::Vector2f& newDirection);
 
+	bool contains(const sf::Vector2f& point) const;
+
 	inline const sf::Vector2f& getStartPos() const { return startPos; }
 	inline const sf::Vector2f& getDirection() const { return direction; }
 

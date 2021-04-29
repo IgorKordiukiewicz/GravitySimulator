@@ -23,6 +23,11 @@ void ArrowShape::setDirection(const sf::Vector2f& newEndPos)
 	calculateVertices();
 }
 
+bool ArrowShape::contains(const sf::Vector2f& point) const
+{
+	return headVertices.getBounds().contains(point);
+}
+
 void ArrowShape::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(lineVertices);

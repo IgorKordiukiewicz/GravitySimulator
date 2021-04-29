@@ -25,6 +25,7 @@ public:
 	inline const sf::Vector2f& getCurrentPosition() const { return currentPosition; }
 	inline const sf::Vector2f& getCurrentVelocity() const { return currentVelocity; }
 	inline const sf::CircleShape& getBodyShape() const { return bodyShape; }
+	inline const ArrowShape& getVelocityArrowShape() const { return arrowShape; }
 
 private:
 	float mass{ 1.0 };

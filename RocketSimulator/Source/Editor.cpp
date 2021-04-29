@@ -2,31 +2,51 @@
 #include <SFML/Graphics.hpp>
 #include <imgui.h>
 #include "../Include/ArrowShape.hpp"
+#include <iostream>
 
 Editor::Editor(sf::RenderWindow& window, std::vector<CelestialBody>& celestialBodies)
 	: window(window)
 	, celestialBodies(celestialBodies)
 {
-	ArrowShape arrow({ 0.0, 0.0 }, { 50.0, 30.f, });
+	
 }
 
 void Editor::update()
 {	
-	// Check if mouse is clicked and hovered over a celestial body
+	// Check if mouse is clicked and hovered over a celestial body or the body's velocity arrow
 	for (auto& celestialBody : celestialBodies) {
 		const auto& bodyShape = celestialBody.getBodyShape();
 		if (bodyShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window)))
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !draggedBody) {
-			draggedBody = &celestialBody;
+			&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
+			grabbedBody = &celestialBody;
+			grabbedArrowHead = false;
+			mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
+		}
+
+		const auto & arrowShape = celestialBody.getVelocityArrowShape();
+		if (arrowShape.contains(sf::Vector2f(sf::Mouse::getPosition(window)))
+			&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
+			grabbedBody = &celestialBody;
+			grabbedArrowHead = true;
+			mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
 		}
 	}
 
 	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		draggedBody = nullptr;
+		grabbedBody = nullptr;
 	}
-	// Drag the selected body with the mouse cursor
-	if (draggedBody) {
-		draggedBody->setInitialPosition(sf::Vector2f(sf::Mouse::getPosition(window)));
+	// Drag the selected body or the body's velocity arrow head with the mouse cursor
+	if (grabbedBody) {
+		const auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+		const sf::Vector2f posDiff = mousePos - mousePosOnSelect;
+		mousePosOnSelect = mousePos;
+		if (grabbedArrowHead) {
+			grabbedBody->setInitialVelocity(grabbedBody->getInitialVelocity() + posDiff);
+		}
+		else {
+			grabbedBody->setInitialPosition(grabbedBody->getInitialPosition() + posDiff);
+		}
+		//grabbedBody->setInitialPosition(mousePos);
 	}
 
 	ImGui::Begin("Editor");

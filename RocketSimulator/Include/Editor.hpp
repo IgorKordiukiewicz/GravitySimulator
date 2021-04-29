@@ -16,5 +16,7 @@ private:
 	sf::RenderWindow& window;
 	std::vector<CelestialBody>& celestialBodies;
 
-	CelestialBody* draggedBody{ nullptr };
+	CelestialBody* grabbedBody{ nullptr };
+	bool grabbedArrowHead{ false };
+	sf::Vector2f mousePosOnSelect;
 };
