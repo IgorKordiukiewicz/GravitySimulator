@@ -27,6 +27,18 @@
     <ClCompile Include="3rdParty\ImGui\imgui-SFML.cpp">
       <Filter>Source Files\3rdParty\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Universe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CelestialBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Editor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="3rdParty\ImGui\imgui.cpp">
       <Filter>Source Files\3rdParty\ImGui</Filter>
     </ClCompile>
@@ -41,18 +53,6 @@
     </ClCompile>
     <ClCompile Include="3rdParty\ImGui\imgui_widgets.cpp">
       <Filter>Source Files\3rdParty\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Universe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\CelestialBody.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Editor.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

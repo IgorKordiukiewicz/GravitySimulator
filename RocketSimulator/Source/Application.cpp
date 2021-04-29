@@ -19,10 +19,10 @@ void Application::run()
 
 		processEvents();
 
+		ImGui::SFML::Update(window, sf::seconds(deltaTime));
+
 		universe.update(deltaTime);
 		editor.update();
-
-		ImGui::SFML::Update(window, sf::seconds(deltaTime));
 
 		window.clear();
 
