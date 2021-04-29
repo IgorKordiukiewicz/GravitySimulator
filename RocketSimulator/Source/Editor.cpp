@@ -76,6 +76,16 @@ void Editor::update()
 		float velocityInput[2] = { celestialBody.getInitialVelocity().x, celestialBody.getInitialVelocity().y };
 		ImGui::InputFloat2("Velocity", velocityInput);
 		celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
+		
+		// Update shape color
+		const auto color = celestialBody.getBodyShape().getFillColor();
+		float colorInput[3] = { static_cast<float>(color.r) / 255.f, 
+			static_cast<float>(color.g) / 255.f, 
+			static_cast<float>(color.b) / 255.f};
+		ImGui::ColorEdit3("Color", colorInput);
+		celestialBody.setColor({ static_cast<sf::Uint8>(colorInput[0] * 255.f), 
+			static_cast<sf::Uint8>(colorInput[1] * 255.f), 
+			static_cast<sf::Uint8>(colorInput[2] * 255.f) });
 
 		ImGui::Separator();
 

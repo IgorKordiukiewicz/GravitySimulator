@@ -17,6 +17,7 @@ public:
 	void setRadius(const float newRadius);
 	void setInitialPosition(const sf::Vector2f& newInitialPosition);
 	void setInitialVelocity(const sf::Vector2f& newInitialVelocity);
+	void setColor(const sf::Color& newColor);
 
 	inline const float getMass() const { return mass; }
 	inline const float getRadius() const { return radius; }

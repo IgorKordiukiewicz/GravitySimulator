@@ -4,9 +4,12 @@
 #include <SFML/Graphics.hpp>
 
 Application::Application()
-	: window(sf::VideoMode(1600, 900), "Rocket Simulator")
-	, editor(window, universe.getCelestialBodies())
+	: editor(window, universe.getCelestialBodies())
 {
+	// Initialize window
+	sf::ContextSettings contextSettings;
+	contextSettings.antialiasingLevel = 8;
+	window.create(sf::VideoMode(1600, 900), "Rocket Simulator", sf::Style::Default, contextSettings);
 	window.setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(window);
 }

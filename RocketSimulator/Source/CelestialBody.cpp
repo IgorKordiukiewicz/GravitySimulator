@@ -51,3 +51,8 @@ void CelestialBody::setInitialVelocity(const sf::Vector2f& newInitialVelocity)
 
 	arrowShape.setDirection(currentVelocity);
 }
+
+void CelestialBody::setColor(const sf::Color& newColor)
+{
+	bodyShape.setFillColor(newColor);
+}
