@@ -1,11 +1,13 @@
 #include "../Include/Editor.hpp"
 #include <SFML/Graphics.hpp>
 #include <imgui.h>
+#include "../Include/ArrowShape.hpp"
 
 Editor::Editor(sf::RenderWindow& window, std::vector<CelestialBody>& celestialBodies)
 	: window(window)
 	, celestialBodies(celestialBodies)
 {
+	ArrowShape arrow({ 0.0, 0.0 }, { 50.0, 30.f, });
 }
 
 void Editor::update()

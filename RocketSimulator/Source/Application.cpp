@@ -22,9 +22,10 @@ void Application::run()
 		ImGui::SFML::Update(window, sf::seconds(deltaTime));
 
 		universe.update(deltaTime);
-		editor.update();
 
 		window.clear();
+
+		editor.update();
 
 		// Render
 		universe.draw(window);

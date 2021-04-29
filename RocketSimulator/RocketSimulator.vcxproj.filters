@@ -54,6 +54,9 @@
     <ClCompile Include="3rdParty\ImGui\imgui_widgets.cpp">
       <Filter>Source Files\3rdParty\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ArrowShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Application.hpp">
@@ -66,6 +69,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Include\Editor.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ArrowShape.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

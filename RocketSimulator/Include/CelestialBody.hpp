@@ -3,6 +3,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include "ArrowShape.hpp"
 
 class CelestialBody
 {
@@ -34,4 +35,5 @@ private:
 	sf::Vector2f currentVelocity;
 
 	sf::CircleShape bodyShape;
+	ArrowShape arrowShape;
 };

@@ -154,12 +154,14 @@
     <ClCompile Include="3rdParty\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\ArrowShape.cpp" />
     <ClCompile Include="Source\CelestialBody.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
     <ClCompile Include="Source\Universe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Application.hpp" />
+    <ClInclude Include="Include\ArrowShape.hpp" />
     <ClInclude Include="Include\CelestialBody.hpp" />
     <ClInclude Include="Include\Editor.hpp" />
     <ClInclude Include="Include\Universe.hpp" />
