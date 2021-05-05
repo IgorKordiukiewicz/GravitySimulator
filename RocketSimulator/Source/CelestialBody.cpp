@@ -1,6 +1,7 @@
 #include "../Include/CelestialBody.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "../Include/Utils.hpp"
 
 CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity)
 	: mass(mass)
@@ -8,7 +9,8 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	, initialPosition(initialPosition)
 	, initialVelocity(initialVelocity)
 	, arrowShape(initialPosition, initialVelocity)
-{
+	, id(nextBodyId++)
+{	
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
 	
@@ -17,15 +19,33 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	bodyShape.setFillColor(sf::Color::White);
 }
 
-void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies, float deltaTime)
+void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime)
 {
 	for (const auto& otherBody : otherBodies) {
+		if (otherBody.getId() == id) {
+			continue;
+		}
+
+		// Calculate velocity using Newton's law of universal gravitation
+		const float dist = utils::getDistanceBetweenPoints(otherBody.getCurrentPosition(), currentPosition);
+		const float distSquared = dist * dist;
+		const sf::Vector2f forceDirection = utils::getNormalizedVector(sf::Vector2f(otherBody.getCurrentPosition() - currentPosition));
+		const sf::Vector2f force = forceDirection * gravitationalForce * mass * otherBody.getMass() /  distSquared;
+		const sf::Vector2f acceleration = force / mass;
+		currentVelocity += acceleration * deltaTime;
 	}
 }
 
 void CelestialBody::updatePosition(float deltaTime)
-{
-	//currentPosition += currentVelocity * deltaTime;
+{	
+	currentPosition += currentVelocity * deltaTime;
+	bodyShape.setPosition(currentPosition);
+	arrowShape.setStartPos(currentPosition);
+	arrowShape.setDirection(currentVelocity);
+
+	if (id != 1) {
+		return;
+	}
 }
 
 void CelestialBody::draw(sf::RenderWindow& window)

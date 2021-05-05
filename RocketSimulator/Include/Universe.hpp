@@ -21,7 +21,7 @@ public:
 private:
 	std::vector<CelestialBody> celestialBodies;
 
-	const float gravitationalForce = 0.01f;
+	const float gravitationalForce = 100000.f;
 
 	bool simulationRunning{ false };
 };

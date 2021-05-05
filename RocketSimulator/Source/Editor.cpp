@@ -13,38 +13,40 @@ Editor::Editor(sf::RenderWindow& window, Universe& universe)
 
 void Editor::update()
 {	
-	// Check if mouse is clicked and hovered over a celestial body or the body's velocity arrow
-	for (auto& celestialBody : universe.getCelestialBodies()) {
-		const auto& bodyShape = celestialBody.getBodyShape();
-		if (bodyShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window)))
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
-			grabbedBody = &celestialBody;
-			grabbedArrowHead = false;
-			mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
+	if (!universe.isSimulationRunning()) {
+		// Check if mouse is clicked and hovered over a celestial body or the body's velocity arrow
+		for (auto& celestialBody : universe.getCelestialBodies()) {
+			const auto& bodyShape = celestialBody.getBodyShape();
+			if (bodyShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window)))
+				&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
+				grabbedBody = &celestialBody;
+				grabbedArrowHead = false;
+				mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
+			}
+
+			const auto& arrowShape = celestialBody.getVelocityArrowShape();
+			if (arrowShape.contains(sf::Vector2f(sf::Mouse::getPosition(window)))
+				&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
+				grabbedBody = &celestialBody;
+				grabbedArrowHead = true;
+				mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
+			}
 		}
 
-		const auto & arrowShape = celestialBody.getVelocityArrowShape();
-		if (arrowShape.contains(sf::Vector2f(sf::Mouse::getPosition(window)))
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
-			grabbedBody = &celestialBody;
-			grabbedArrowHead = true;
-			mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
+		if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+			grabbedBody = nullptr;
 		}
-	}
-
-	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-		grabbedBody = nullptr;
-	}
-	// Drag the selected body or the body's velocity arrow head with the mouse cursor
-	if (grabbedBody) {
-		const auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
-		const sf::Vector2f posDiff = mousePos - mousePosOnSelect;
-		mousePosOnSelect = mousePos;
-		if (grabbedArrowHead) {
-			grabbedBody->setInitialVelocity(grabbedBody->getInitialVelocity() + posDiff);
-		}
-		else {
-			grabbedBody->setInitialPosition(grabbedBody->getInitialPosition() + posDiff);
+		// Drag the selected body or the body's velocity arrow head with the mouse cursor
+		if (grabbedBody) {
+			const auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
+			const sf::Vector2f posDiff = mousePos - mousePosOnSelect;
+			mousePosOnSelect = mousePos;
+			if (grabbedArrowHead) {
+				grabbedBody->setInitialVelocity(grabbedBody->getInitialVelocity() + posDiff);
+			}
+			else {
+				grabbedBody->setInitialPosition(grabbedBody->getInitialPosition() + posDiff);
+			}
 		}
 	}
 
@@ -52,7 +54,9 @@ void Editor::update()
 
 	updateSimulationState();
 
-	updateCelestialBodiesProperties();
+	if (!universe.isSimulationRunning()) {
+		updateCelestialBodiesProperties();
+	}
 
 	ImGui::End();
 }

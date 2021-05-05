@@ -11,7 +11,7 @@ public:
 	CelestialBody(const float mass, const float radius, const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity);
 	~CelestialBody() = default;
 
-	void updateVelocity(const std::vector<CelestialBody>& otherBodies, float deltaTime);
+	void updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime);
 	void updatePosition(float deltaTime);
 
 	void draw(sf::RenderWindow& window);
@@ -22,6 +22,7 @@ public:
 	void setInitialVelocity(const sf::Vector2f& newInitialVelocity);
 	void setColor(const sf::Color& newColor);
 
+	inline const int getId() const { return id; }
 	inline const float getMass() const { return mass; }
 	inline const float getRadius() const { return radius; }
 	inline const sf::Vector2f& getInitialPosition() const { return initialPosition; }
@@ -41,4 +42,7 @@ private:
 
 	sf::CircleShape bodyShape;
 	ArrowShape arrowShape;
+
+	const int id{ 0 };
+	inline static int nextBodyId = 1;
 };

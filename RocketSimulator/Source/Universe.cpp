@@ -18,7 +18,7 @@ void Universe::update(float deltaTime)
 	}
 
 	for (auto& celestialBody : celestialBodies) {
-		celestialBody.updateVelocity(celestialBodies, deltaTime);
+		celestialBody.updateVelocity(celestialBodies, gravitationalForce, deltaTime);
 	}
 
 	for (auto& celestialBody : celestialBodies) {
