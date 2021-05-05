@@ -1,5 +1,6 @@
 #include "../Include/CelestialBody.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity)
 	: mass(mass)
@@ -14,6 +15,17 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	setRadius(radius);
 	bodyShape.setPosition(initialPosition);
 	bodyShape.setFillColor(sf::Color::White);
+}
+
+void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies, float deltaTime)
+{
+	for (const auto& otherBody : otherBodies) {
+	}
+}
+
+void CelestialBody::updatePosition(float deltaTime)
+{
+	//currentPosition += currentVelocity * deltaTime;
 }
 
 void CelestialBody::draw(sf::RenderWindow& window)

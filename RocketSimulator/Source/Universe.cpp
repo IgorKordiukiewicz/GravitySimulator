@@ -13,6 +13,17 @@ Universe::Universe()
 
 void Universe::update(float deltaTime)
 {
+	if (!simulationRunning) {
+		return;
+	}
+
+	for (auto& celestialBody : celestialBodies) {
+		celestialBody.updateVelocity(celestialBodies, deltaTime);
+	}
+
+	for (auto& celestialBody : celestialBodies) {
+		celestialBody.updatePosition(deltaTime);
+	}
 }
 
 void Universe::draw(sf::RenderWindow& window)

@@ -11,6 +11,9 @@ public:
 	CelestialBody(const float mass, const float radius, const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity);
 	~CelestialBody() = default;
 
+	void updateVelocity(const std::vector<CelestialBody>& otherBodies, float deltaTime);
+	void updatePosition(float deltaTime);
+
 	void draw(sf::RenderWindow& window);
 
 	void setMass(const float newMass);

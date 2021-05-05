@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 Application::Application()
-	: editor(window, universe.getCelestialBodies())
+	: editor(window, universe)
 {
 	// Initialize window
 	sf::ContextSettings contextSettings;

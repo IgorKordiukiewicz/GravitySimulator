@@ -4,9 +4,9 @@
 #include "../Include/ArrowShape.hpp"
 #include <iostream>
 
-Editor::Editor(sf::RenderWindow& window, std::vector<CelestialBody>& celestialBodies)
+Editor::Editor(sf::RenderWindow& window, Universe& universe)
 	: window(window)
-	, celestialBodies(celestialBodies)
+	, universe(universe)
 {
 	
 }
@@ -14,7 +14,7 @@ Editor::Editor(sf::RenderWindow& window, std::vector<CelestialBody>& celestialBo
 void Editor::update()
 {	
 	// Check if mouse is clicked and hovered over a celestial body or the body's velocity arrow
-	for (auto& celestialBody : celestialBodies) {
+	for (auto& celestialBody : universe.getCelestialBodies()) {
 		const auto& bodyShape = celestialBody.getBodyShape();
 		if (bodyShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window)))
 			&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
@@ -46,14 +46,36 @@ void Editor::update()
 		else {
 			grabbedBody->setInitialPosition(grabbedBody->getInitialPosition() + posDiff);
 		}
-		//grabbedBody->setInitialPosition(mousePos);
 	}
 
 	ImGui::Begin("Editor");
 
-	// Update celestial bodies properties
+	updateSimulationState();
+
+	updateCelestialBodiesProperties();
+
+	ImGui::End();
+}
+
+void Editor::updateSimulationState()
+{
+	const std::string simulationStateStr = universe.isSimulationRunning() ? "Running" : "Paused";
+	ImGui::Text(std::string("Simulation (" + simulationStateStr + ")").c_str());
+	ImGui::SameLine();
+	if (ImGui::Button("Start")) {
+		universe.runSimulation();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Pause")) {
+		universe.pauseSimulation();
+	}
+	ImGui::Separator();
+}
+
+void Editor::updateCelestialBodiesProperties()
+{
 	int imguiId{ 0 };
-	for (auto& celestialBody : celestialBodies) {
+	for (auto& celestialBody : universe.getCelestialBodies()) {
 		ImGui::PushID(imguiId);
 		++imguiId;
 
@@ -71,26 +93,24 @@ void Editor::update()
 		float positionInput[2] = { celestialBody.getInitialPosition().x, celestialBody.getInitialPosition().y };
 		ImGui::InputFloat2("Position", positionInput);
 		celestialBody.setInitialPosition({ positionInput[0], positionInput[1] });
-	
+
 		// Update initial velocity
 		float velocityInput[2] = { celestialBody.getInitialVelocity().x, celestialBody.getInitialVelocity().y };
 		ImGui::InputFloat2("Velocity", velocityInput);
 		celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
-		
+
 		// Update shape color
 		const auto color = celestialBody.getBodyShape().getFillColor();
-		float colorInput[3] = { static_cast<float>(color.r) / 255.f, 
-			static_cast<float>(color.g) / 255.f, 
-			static_cast<float>(color.b) / 255.f};
+		float colorInput[3] = { static_cast<float>(color.r) / 255.f,
+			static_cast<float>(color.g) / 255.f,
+			static_cast<float>(color.b) / 255.f };
 		ImGui::ColorEdit3("Color", colorInput);
-		celestialBody.setColor({ static_cast<sf::Uint8>(colorInput[0] * 255.f), 
-			static_cast<sf::Uint8>(colorInput[1] * 255.f), 
+		celestialBody.setColor({ static_cast<sf::Uint8>(colorInput[0] * 255.f),
+			static_cast<sf::Uint8>(colorInput[1] * 255.f),
 			static_cast<sf::Uint8>(colorInput[2] * 255.f) });
 
 		ImGui::Separator();
 
 		ImGui::PopID();
 	}
-
-	ImGui::End();
 }
