@@ -14,8 +14,8 @@ public:
 
 	void createNewBody();
 
-	inline void runSimulation() { simulationRunning = true; }
-	inline void pauseSimulation() { simulationRunning = false; }
+	void runSimulation();
+	void pauseSimulation();
 
 	inline std::vector<CelestialBody>& getCelestialBodies() { return celestialBodies; }
 	inline bool isSimulationRunning() const { return simulationRunning; }

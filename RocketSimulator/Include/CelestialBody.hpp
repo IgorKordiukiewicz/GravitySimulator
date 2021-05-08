@@ -3,6 +3,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/VertexArray.hpp>
 #include "ArrowShape.hpp"
 
 class CelestialBody
@@ -14,6 +15,7 @@ public:
 	void updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime);
 	void updatePosition(float deltaTime);
 
+	void drawTrail(sf::RenderWindow& window);
 	void draw(sf::RenderWindow& window);
 
 	void setMass(const float newMass);
@@ -21,6 +23,7 @@ public:
 	void setInitialPosition(const sf::Vector2f& newInitialPosition);
 	void setInitialVelocity(const sf::Vector2f& newInitialVelocity);
 	void setColor(const sf::Color& newColor);
+	void clearTrail();
 	void markToDelete();
 
 	inline int getId() const { return id; }
@@ -44,6 +47,8 @@ private:
 
 	sf::CircleShape bodyShape;
 	ArrowShape arrowShape;
+
+	sf::VertexArray trail;
 
 	bool shouldBeDeleted{ false };
 	int id{ 0 };

@@ -37,6 +37,11 @@ void Universe::update(float deltaTime)
 
 void Universe::draw(sf::RenderWindow& window)
 {
+	// Draw the trails first, so that a trail is never drawn over a celestial body
+	for (auto& celestialBody : celestialBodies) {
+		celestialBody.drawTrail(window);
+	}
+	
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.draw(window);
 	}
@@ -46,4 +51,19 @@ void Universe::createNewBody()
 {
 	CelestialBody body{ 10.0f, 10.f, {10.f, 10.f},{0.f, 0.f} };
 	celestialBodies.push_back(std::move(body));
+}
+
+void Universe::runSimulation()
+{
+	simulationRunning = true;
+}
+
+void Universe::pauseSimulation()
+{
+	simulationRunning = false;
+
+	// Clear bodies trails
+	for (auto& celestialBody : celestialBodies) {
+		celestialBody.clearTrail();
+	}
 }

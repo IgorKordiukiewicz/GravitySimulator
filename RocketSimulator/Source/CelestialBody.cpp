@@ -17,6 +17,8 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	setRadius(radius);
 	bodyShape.setPosition(initialPosition);
 	bodyShape.setFillColor(sf::Color::White);
+
+	trail.setPrimitiveType(sf::LineStrip);
 }
 
 void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime)
@@ -43,9 +45,23 @@ void CelestialBody::updatePosition(float deltaTime)
 	arrowShape.setStartPos(currentPosition);
 	arrowShape.setDirection(currentVelocity);
 
-	if (id != 1) {
-		return;
+	// Update trail
+	if (trail.getVertexCount() >= 1) {
+		// Compare body and last trail point positions casted to int vector to avoid unnecessary trail points
+		const sf::Vector2i posInt(currentPosition);
+		const sf::Vector2i lastTrailPosInt(trail[trail.getVertexCount() - 1].position);
+		if (posInt != lastTrailPosInt) {
+			trail.append({ currentPosition, bodyShape.getFillColor() });
+		}
 	}
+	else {
+		trail.append({ currentPosition, bodyShape.getFillColor() });
+	}
+}
+
+void CelestialBody::drawTrail(sf::RenderWindow& window)
+{
+	window.draw(trail);
 }
 
 void CelestialBody::draw(sf::RenderWindow& window)
@@ -87,6 +103,11 @@ void CelestialBody::setInitialVelocity(const sf::Vector2f& newInitialVelocity)
 void CelestialBody::setColor(const sf::Color& newColor)
 {
 	bodyShape.setFillColor(newColor);
+}
+
+void CelestialBody::clearTrail()
+{
+	trail.clear();
 }
 
 void CelestialBody::markToDelete()
