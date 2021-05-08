@@ -2,6 +2,7 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 Application::Application()
 	: editor(window, universe)
@@ -16,6 +17,12 @@ Application::Application()
 
 void Application::run()
 {
+	sf::Text fpsText;
+	sf::Font font;
+	font.loadFromFile("SourceSansPro-ExtraLight.ttf");
+	fpsText.setFont(font);
+	fpsText.setCharacterSize(40);
+	
 	sf::Clock clock;
 	while (window.isOpen()) {
 		const float deltaTime = clock.restart().asSeconds();
@@ -30,8 +37,13 @@ void Application::run()
 
 		editor.update();
 
+		// Calculate fps
+		const int fps = static_cast<int>(1.f / deltaTime);
+		fpsText.setString(std::to_string(fps));
+
 		// Render
 		universe.draw(window);
+		window.draw(fpsText);
 		ImGui::SFML::Render(window);
 		window.display();
 	}
