@@ -43,7 +43,12 @@ void Application::run()
 
 		// Render
 		universe.draw(window);
+
+		auto view = window.getView();
+		window.setView(window.getDefaultView());
 		window.draw(fpsText);
+		window.setView(view);
+
 		ImGui::SFML::Render(window);
 		window.display();
 	}

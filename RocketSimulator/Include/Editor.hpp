@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <vector>
 #include "Universe.hpp"
+#include <optional>
 
 class Editor
 {
@@ -23,4 +24,6 @@ private:
 	CelestialBody* grabbedBody{ nullptr };
 	bool grabbedArrowHead{ false };
 	sf::Vector2f mousePosOnSelect;
+
+	std::optional<int> centralBodyId;
 };

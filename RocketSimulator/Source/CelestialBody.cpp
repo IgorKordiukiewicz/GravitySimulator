@@ -42,8 +42,6 @@ void CelestialBody::updatePosition(float deltaTime)
 {	
 	currentPosition += currentVelocity * deltaTime;
 	bodyShape.setPosition(currentPosition);
-	arrowShape.setStartPos(currentPosition);
-	arrowShape.setDirection(currentVelocity);
 
 	// Update trail
 	if (trail.getVertexCount() >= 1) {
@@ -64,9 +62,11 @@ void CelestialBody::drawTrail(sf::RenderWindow& window)
 	window.draw(trail);
 }
 
-void CelestialBody::draw(sf::RenderWindow& window)
+void CelestialBody::draw(sf::RenderWindow& window, bool drawArrowShape)
 {
-	window.draw(arrowShape);
+	if (drawArrowShape) {
+		window.draw(arrowShape);
+	}
 	window.draw(bodyShape);
 }
 

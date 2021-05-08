@@ -37,13 +37,23 @@ void Universe::update(float deltaTime)
 
 void Universe::draw(sf::RenderWindow& window)
 {
+	// Center view around the central body
+	if (centralBody) {
+		sf::View view = window.getView();
+		view.setCenter(centralBody->getCurrentPosition());
+		window.setView(view);
+	}
+	else {
+		window.setView(window.getDefaultView());
+	}
+	
 	// Draw the trails first, so that a trail is never drawn over a celestial body
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.drawTrail(window);
 	}
 	
 	for (auto& celestialBody : celestialBodies) {
-		celestialBody.draw(window);
+		celestialBody.draw(window, !simulationRunning);
 	}
 }
 
@@ -51,6 +61,11 @@ void Universe::createNewBody()
 {
 	CelestialBody body{ 10.0f, 10.f, {10.f, 10.f},{0.f, 0.f} };
 	celestialBodies.push_back(std::move(body));
+}
+
+void Universe::setCentralBody(CelestialBody* newCentralBody)
+{
+	centralBody = newCentralBody;
 }
 
 void Universe::runSimulation()

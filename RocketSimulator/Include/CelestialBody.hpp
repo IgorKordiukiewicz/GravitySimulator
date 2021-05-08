@@ -16,7 +16,7 @@ public:
 	void updatePosition(float deltaTime);
 
 	void drawTrail(sf::RenderWindow& window);
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window, bool drawArrowShape);
 
 	void setMass(const float newMass);
 	void setRadius(const float newRadius);

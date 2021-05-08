@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include "../Include/ArrowShape.hpp"
 #include <iostream>
+#include "../Include/Utils.hpp"
 
 Editor::Editor(sf::RenderWindow& window, Universe& universe)
 	: window(window)
@@ -13,23 +14,29 @@ Editor::Editor(sf::RenderWindow& window, Universe& universe)
 
 void Editor::update()
 {	
+	// Only allow changing bodies positions and velocities when the simulation is not running
 	if (!universe.isSimulationRunning()) {
 		// Check if mouse is clicked and hovered over a celestial body or the body's velocity arrow
+		const sf::Vector2i mousePixelPos = sf::Mouse::getPosition(window);
+		const sf::Vector2f mousePos = window.mapPixelToCoords(mousePixelPos);
 		for (auto& celestialBody : universe.getCelestialBodies()) {
 			const auto& bodyShape = celestialBody.getBodyShape();
-			if (bodyShape.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window)))
-				&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
+			if (bodyShape.getGlobalBounds().contains(mousePos)
+				&& sf::Mouse::isButtonPressed(sf::Mouse::Left) 
+				&& !grabbedBody
+				&& (centralBodyId.has_value() ? centralBodyId.value() != celestialBody.getId() : true)) {
 				grabbedBody = &celestialBody;
 				grabbedArrowHead = false;
-				mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
+				mousePosOnSelect = mousePos;
 			}
 
 			const auto& arrowShape = celestialBody.getVelocityArrowShape();
-			if (arrowShape.contains(sf::Vector2f(sf::Mouse::getPosition(window)))
-				&& sf::Mouse::isButtonPressed(sf::Mouse::Left) && !grabbedBody) {
+			if (arrowShape.contains(mousePos)
+				&& sf::Mouse::isButtonPressed(sf::Mouse::Left) 
+				&& !grabbedBody) {
 				grabbedBody = &celestialBody;
 				grabbedArrowHead = true;
-				mousePosOnSelect = sf::Vector2f(sf::Mouse::getPosition(window));
+				mousePosOnSelect = mousePos;
 			}
 		}
 
@@ -38,7 +45,6 @@ void Editor::update()
 		}
 		// Drag the selected body or the body's velocity arrow head with the mouse cursor
 		if (grabbedBody) {
-			const auto mousePos = sf::Vector2f(sf::Mouse::getPosition(window));
 			const sf::Vector2f posDiff = mousePos - mousePosOnSelect;
 			mousePosOnSelect = mousePos;
 			if (grabbedArrowHead) {
@@ -53,6 +59,34 @@ void Editor::update()
 	ImGui::Begin("Editor");
 
 	updateSimulationState();
+
+	// Select body to center view around
+	ImGui::Text("Center view around a body:");
+	const std::string previewText = centralBodyId.has_value() ? "Body " + std::to_string(centralBodyId.value()) : "None";
+	if (ImGui::BeginCombo("", previewText.c_str())) {
+		// None - don't center view around a body
+		if (ImGui::Selectable("None", !centralBodyId.has_value())) {
+			centralBodyId = std::nullopt;
+			universe.setCentralBody(nullptr);
+		}
+		if (!centralBodyId.has_value()) {
+			ImGui::SetItemDefaultFocus();
+		}
+
+		for (auto& celestialBody : universe.getCelestialBodies()) {
+			bool isSelected = centralBodyId.has_value() ? centralBodyId.value() == celestialBody.getId() : false;
+			const std::string bodyStr = "Body " + std::to_string(celestialBody.getId());
+			if (ImGui::Selectable(bodyStr.c_str(), isSelected)) {
+				centralBodyId.emplace(celestialBody.getId());
+				universe.setCentralBody(&celestialBody);
+			}
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
+	ImGui::Separator();
 
 	if (!universe.isSimulationRunning()) {
 		//Add new bodies
@@ -76,7 +110,7 @@ void Editor::updateSimulationState()
 		universe.runSimulation();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Pause")) {
+	if (ImGui::Button("Reset")) {
 		universe.pauseSimulation();
 	}
 	ImGui::Separator();
@@ -97,6 +131,11 @@ void Editor::updateCelestialBodiesProperties()
 		ImGui::SameLine();
 		if (ImGui::Button("Delete")) {
 			celestialBody.markToDelete();
+			// If the body was the central body, reset the central body and the window's view
+			if (centralBodyId.has_value() && centralBodyId.value() == celestialBody.getId()) {
+				centralBodyId = std::nullopt;
+				universe.setCentralBody(nullptr);
+			}
 		}
 
 		// Update mass

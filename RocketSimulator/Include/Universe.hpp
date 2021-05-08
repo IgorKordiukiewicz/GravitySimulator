@@ -13,6 +13,7 @@ public:
 	void draw(sf::RenderWindow& window);
 
 	void createNewBody();
+	void setCentralBody(CelestialBody* newCentralBody);
 
 	void runSimulation();
 	void pauseSimulation();
@@ -26,4 +27,6 @@ private:
 	const float gravitationalForce = 100000.f;
 
 	bool simulationRunning{ false };
+
+	CelestialBody* centralBody{ nullptr };
 };
