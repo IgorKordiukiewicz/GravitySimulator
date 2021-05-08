@@ -55,6 +55,12 @@ void Editor::update()
 	updateSimulationState();
 
 	if (!universe.isSimulationRunning()) {
+		//Add new bodies
+		if (ImGui::Button("Add new body")) {
+			universe.createNewBody();
+		}
+		ImGui::Separator();
+
 		updateCelestialBodiesProperties();
 	}
 
@@ -82,6 +88,16 @@ void Editor::updateCelestialBodiesProperties()
 	for (auto& celestialBody : universe.getCelestialBodies()) {
 		ImGui::PushID(imguiId);
 		++imguiId;
+
+		const int bodyId = celestialBody.getId();
+		const std::string bodyIdStr = "Body " + std::to_string(bodyId);
+		ImGui::Text(bodyIdStr.c_str());
+
+		// Delete body
+		ImGui::SameLine();
+		if (ImGui::Button("Delete")) {
+			celestialBody.markToDelete();
+		}
 
 		// Update mass
 		float massInput = celestialBody.getMass();

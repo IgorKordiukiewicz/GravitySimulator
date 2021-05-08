@@ -12,6 +12,8 @@ public:
 	void update(float deltaTime);
 	void draw(sf::RenderWindow& window);
 
+	void createNewBody();
+
 	inline void runSimulation() { simulationRunning = true; }
 	inline void pauseSimulation() { simulationRunning = false; }
 

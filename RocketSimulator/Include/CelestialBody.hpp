@@ -21,10 +21,12 @@ public:
 	void setInitialPosition(const sf::Vector2f& newInitialPosition);
 	void setInitialVelocity(const sf::Vector2f& newInitialVelocity);
 	void setColor(const sf::Color& newColor);
+	void markToDelete();
 
-	inline const int getId() const { return id; }
-	inline const float getMass() const { return mass; }
-	inline const float getRadius() const { return radius; }
+	inline int getId() const { return id; }
+	inline bool getShouldBeDeleted() const { return shouldBeDeleted; }
+	inline float getMass() const { return mass; }
+	inline float getRadius() const { return radius; }
 	inline const sf::Vector2f& getInitialPosition() const { return initialPosition; }
 	inline const sf::Vector2f& getInitialVelocity() const { return initialVelocity; }
 	inline const sf::Vector2f& getCurrentPosition() const { return currentPosition; }
@@ -43,6 +45,7 @@ private:
 	sf::CircleShape bodyShape;
 	ArrowShape arrowShape;
 
-	const int id{ 0 };
+	bool shouldBeDeleted{ false };
+	int id{ 0 };
 	inline static int nextBodyId = 1;
 };

@@ -24,8 +24,8 @@ private:
 private:
 	sf::Vector2f startPos;
 	sf::Vector2f direction;
-	const float headHeight = 10.f;
-	const float headWidth = 11.5f;
+	float headHeight = 10.f;
+	float headWidth = 11.5f;
 
 	sf::VertexArray lineVertices;
 	sf::VertexArray headVertices;

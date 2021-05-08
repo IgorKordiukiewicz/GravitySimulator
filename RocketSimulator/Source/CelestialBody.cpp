@@ -88,3 +88,8 @@ void CelestialBody::setColor(const sf::Color& newColor)
 {
 	bodyShape.setFillColor(newColor);
 }
+
+void CelestialBody::markToDelete()
+{
+	shouldBeDeleted = true;
+}
