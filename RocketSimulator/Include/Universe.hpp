@@ -14,12 +14,14 @@ public:
 
 	void createNewBody();
 	void setCentralBody(CelestialBody* newCentralBody);
+	void setDrawTrails(bool newValue);
 
 	void runSimulation();
 	void pauseSimulation();
 
 	inline std::vector<CelestialBody>& getCelestialBodies() { return celestialBodies; }
 	inline bool isSimulationRunning() const { return simulationRunning; }
+	inline bool getDrawTrails() const { return drawTrails; }
 
 private:
 	std::vector<CelestialBody> celestialBodies;
@@ -29,4 +31,5 @@ private:
 	bool simulationRunning{ false };
 
 	CelestialBody* centralBody{ nullptr };
+	bool drawTrails{ true };
 };

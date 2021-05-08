@@ -86,6 +86,10 @@ void Editor::update()
 		}
 		ImGui::EndCombo();
 	}
+
+	bool drawTrails = universe.getDrawTrails();
+	ImGui::Checkbox("Trails", &drawTrails);
+	universe.setDrawTrails(drawTrails);
 	ImGui::Separator();
 
 	if (!universe.isSimulationRunning()) {

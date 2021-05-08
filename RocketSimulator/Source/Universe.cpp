@@ -48,8 +48,10 @@ void Universe::draw(sf::RenderWindow& window)
 	}
 	
 	// Draw the trails first, so that a trail is never drawn over a celestial body
-	for (auto& celestialBody : celestialBodies) {
-		celestialBody.drawTrail(window);
+	if (drawTrails) {
+		for (auto& celestialBody : celestialBodies) {
+			celestialBody.drawTrail(window);
+		}
 	}
 	
 	for (auto& celestialBody : celestialBodies) {
@@ -66,6 +68,11 @@ void Universe::createNewBody()
 void Universe::setCentralBody(CelestialBody* newCentralBody)
 {
 	centralBody = newCentralBody;
+}
+
+void Universe::setDrawTrails(bool newValue)
+{
+	drawTrails = newValue;
 }
 
 void Universe::runSimulation()
