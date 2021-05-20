@@ -3,6 +3,13 @@
 #include <vector>
 #include "CelestialBody.hpp"
 
+enum class SimulationState
+{
+	Running,
+	Paused,
+	Reset
+};
+
 class Universe
 {
 public:
@@ -18,9 +25,10 @@ public:
 
 	void runSimulation();
 	void pauseSimulation();
+	void resetSimulation();
 
 	inline std::vector<CelestialBody>& getCelestialBodies() { return celestialBodies; }
-	inline bool isSimulationRunning() const { return simulationRunning; }
+	inline SimulationState getSimulationState() const { return simulationState; }
 	inline bool getDrawTrails() const { return drawTrails; }
 
 private:
@@ -28,7 +36,7 @@ private:
 
 	const float gravitationalForce = 100000.f;
 
-	bool simulationRunning{ false };
+	SimulationState simulationState{ SimulationState::Reset };
 
 	CelestialBody* centralBody{ nullptr };
 	bool drawTrails{ true };

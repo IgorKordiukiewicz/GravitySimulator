@@ -25,6 +25,7 @@ public:
 	void setColor(const sf::Color& newColor);
 	void clearTrail();
 	void markToDelete();
+	void reset();
 
 	inline int getId() const { return id; }
 	inline bool getShouldBeDeleted() const { return shouldBeDeleted; }

@@ -15,7 +15,7 @@ Editor::Editor(sf::RenderWindow& window, Universe& universe)
 void Editor::update()
 {	
 	// Only allow changing bodies positions and velocities when the simulation is not running
-	if (!universe.isSimulationRunning()) {
+	if (universe.getSimulationState() == SimulationState::Reset) {
 		// Check if mouse is clicked and hovered over a celestial body or the body's velocity arrow
 		const sf::Vector2i mousePixelPos = sf::Mouse::getPosition(window);
 		const sf::Vector2f mousePos = window.mapPixelToCoords(mousePixelPos);
@@ -92,7 +92,7 @@ void Editor::update()
 	universe.setDrawTrails(drawTrails);
 	ImGui::Separator();
 
-	if (!universe.isSimulationRunning()) {
+	if (universe.getSimulationState() == SimulationState::Reset) {
 		//Add new bodies
 		if (ImGui::Button("Add new body")) {
 			universe.createNewBody();
@@ -107,15 +107,28 @@ void Editor::update()
 
 void Editor::updateSimulationState()
 {
-	const std::string simulationStateStr = universe.isSimulationRunning() ? "Running" : "Paused";
+	const std::string simulationStateStr = [this]() {
+		switch (universe.getSimulationState()) {
+		case SimulationState::Running:
+			return "Running";
+		case SimulationState::Paused:
+			return "Paused";
+		case SimulationState::Reset:
+			return "Not running";
+		}
+	}();
 	ImGui::Text(std::string("Simulation (" + simulationStateStr + ")").c_str());
 	ImGui::SameLine();
 	if (ImGui::Button("Start")) {
 		universe.runSimulation();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Reset")) {
+	if (ImGui::Button("Pause")) {
 		universe.pauseSimulation();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Reset")) {
+		universe.resetSimulation();
 	}
 	ImGui::Separator();
 }
@@ -153,12 +166,12 @@ void Editor::updateCelestialBodiesProperties()
 		celestialBody.setRadius(radiusInput);
 
 		// Update initial position
-		float positionInput[2] = { celestialBody.getInitialPosition().x, celestialBody.getInitialPosition().y };
+		float positionInput[2] = { celestialBody.getCurrentPosition().x, celestialBody.getCurrentPosition().y };
 		ImGui::InputFloat2("Position", positionInput);
 		celestialBody.setInitialPosition({ positionInput[0], positionInput[1] });
 
 		// Update initial velocity
-		float velocityInput[2] = { celestialBody.getInitialVelocity().x, celestialBody.getInitialVelocity().y };
+		float velocityInput[2] = { celestialBody.getCurrentVelocity().x, celestialBody.getCurrentVelocity().y };
 		ImGui::InputFloat2("Velocity", velocityInput);
 		celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
 

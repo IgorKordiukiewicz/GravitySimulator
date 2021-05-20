@@ -20,7 +20,7 @@ void Universe::update(float deltaTime)
 		}
 	}
 	
-	if (!simulationRunning) {
+	if (simulationState != SimulationState::Running) {
 		return;
 	}
 
@@ -55,7 +55,7 @@ void Universe::draw(sf::RenderWindow& window)
 	}
 	
 	for (auto& celestialBody : celestialBodies) {
-		celestialBody.draw(window, !simulationRunning);
+		celestialBody.draw(window, simulationState == SimulationState::Reset);
 	}
 }
 
@@ -77,15 +77,21 @@ void Universe::setDrawTrails(bool newValue)
 
 void Universe::runSimulation()
 {
-	simulationRunning = true;
+	simulationState = SimulationState::Running;
 }
 
 void Universe::pauseSimulation()
 {
-	simulationRunning = false;
+	simulationState = SimulationState::Paused;
+}
+
+void Universe::resetSimulation()
+{
+	simulationState = SimulationState::Reset;
 
 	// Clear bodies trails
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.clearTrail();
+		celestialBody.reset();
 	}
 }

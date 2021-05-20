@@ -114,3 +114,9 @@ void CelestialBody::markToDelete()
 {
 	shouldBeDeleted = true;
 }
+
+void CelestialBody::reset()
+{
+	currentPosition = initialPosition;
+	currentVelocity = initialVelocity;
+}
