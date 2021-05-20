@@ -12,6 +12,7 @@ public:
 	void setStartPos(const sf::Vector2f& newStartPos);
 	void setDirection(const sf::Vector2f& newDirection);
 
+	// Check whether a point is inside the shape
 	bool contains(const sf::Vector2f& point) const;
 
 	inline const sf::Vector2f& getStartPos() const { return startPos; }
@@ -23,6 +24,7 @@ private:
 
 private:
 	sf::Vector2f startPos;
+	// The direction the arrow is facing
 	sf::Vector2f direction;
 	float headHeight = 10.f;
 	float headWidth = 11.5f;

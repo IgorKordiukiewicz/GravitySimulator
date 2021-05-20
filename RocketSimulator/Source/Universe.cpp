@@ -13,13 +13,14 @@ Universe::Universe()
 
 void Universe::update(float deltaTime)
 {
-	// Check for potential bodies to destroy
+	// Check for potential bodies to delete
 	for (auto i = celestialBodies.size(); i--;) {
 		if (celestialBodies[i].getShouldBeDeleted()) {
 			celestialBodies.erase(celestialBodies.begin() + i);
 		}
 	}
 	
+	// Only update the simulation if its state is set to running
 	if (simulationState != SimulationState::Running) {
 		return;
 	}
@@ -37,7 +38,7 @@ void Universe::update(float deltaTime)
 
 void Universe::draw(sf::RenderWindow& window)
 {
-	// Center view around the central body
+	// If central body is set, then center the view around it
 	if (centralBody) {
 		sf::View view = window.getView();
 		view.setCenter(centralBody->getCurrentPosition());
@@ -54,6 +55,7 @@ void Universe::draw(sf::RenderWindow& window)
 		}
 	}
 	
+	// Draw the bodies
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.draw(window, simulationState == SimulationState::Reset);
 	}
@@ -61,6 +63,7 @@ void Universe::draw(sf::RenderWindow& window)
 
 void Universe::createNewBody()
 {
+	// Create new body with some default values	
 	CelestialBody body{ 10.0f, 10.f, {10.f, 10.f},{0.f, 0.f} };
 	celestialBodies.push_back(std::move(body));
 }
@@ -89,7 +92,7 @@ void Universe::resetSimulation()
 {
 	simulationState = SimulationState::Reset;
 
-	// Clear bodies trails
+	// Reset bodies and clear their trails
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.clearTrail();
 		celestialBody.reset();

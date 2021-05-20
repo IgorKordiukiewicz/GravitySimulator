@@ -26,6 +26,7 @@ public:
 	void setColor(const Color& newColor);
 	void clearTrail();
 	void markToDelete();
+	// Resets the body's position and velocity to the initial values
 	void reset();
 
 	inline int getId() const { return id; }
@@ -57,6 +58,7 @@ private:
 	sf::VertexArray trail;
 
 	bool shouldBeDeleted{ false };
+	// The id is assigned on creation, and nextBodyId is incremented
 	int id{ 0 };
 	inline static int nextBodyId = 1;
 };

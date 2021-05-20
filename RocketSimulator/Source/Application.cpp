@@ -24,13 +24,13 @@ void Application::run()
 	fpsText.setCharacterSize(40);
 	
 	sf::Clock clock;
+	// Main loop
 	while (window.isOpen()) {
 		const float deltaTime = clock.restart().asSeconds();
 
 		processEvents();
 
 		ImGui::SFML::Update(window, sf::seconds(deltaTime));
-
 		universe.update(deltaTime);
 
 		window.clear();
@@ -44,6 +44,7 @@ void Application::run()
 		// Render
 		universe.draw(window);
 
+		// Reset view to draw the text
 		auto view = window.getView();
 		window.setView(window.getDefaultView());
 		window.draw(fpsText);

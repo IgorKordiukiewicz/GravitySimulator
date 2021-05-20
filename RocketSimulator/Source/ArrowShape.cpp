@@ -42,6 +42,7 @@ void ArrowShape::calculateVertices()
 	lineVertices.append(startPos);
 	lineVertices.append(endPos);
 
+	// Calculate the head triangle vertices
 	const sf::Vector2f dirVec = endPos - startPos;
 	const float dirVecLength = sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
 	const sf::Vector2f dirVecNormalized = -dirVec / dirVecLength;

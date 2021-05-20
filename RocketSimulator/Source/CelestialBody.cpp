@@ -14,9 +14,10 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
 	
+	// Setup the body shape
 	setRadius(radius);
 	bodyShape.setPosition(initialPosition);
-	bodyShape.setFillColor(sf::Color::White);
+	bodyShape.setFillColor(color.toSFMLColor());
 
 	trail.setPrimitiveType(sf::LineStrip);
 }
