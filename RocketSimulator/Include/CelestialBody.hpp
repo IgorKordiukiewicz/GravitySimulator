@@ -5,6 +5,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/VertexArray.hpp>
 #include "ArrowShape.hpp"
+#include "Color.hpp"
 
 class CelestialBody
 {
@@ -22,7 +23,7 @@ public:
 	void setRadius(const float newRadius);
 	void setInitialPosition(const sf::Vector2f& newInitialPosition);
 	void setInitialVelocity(const sf::Vector2f& newInitialVelocity);
-	void setColor(const sf::Color& newColor);
+	void setColor(const Color& newColor);
 	void clearTrail();
 	void markToDelete();
 	void reset();
@@ -35,6 +36,7 @@ public:
 	inline const sf::Vector2f& getInitialVelocity() const { return initialVelocity; }
 	inline const sf::Vector2f& getCurrentPosition() const { return currentPosition; }
 	inline const sf::Vector2f& getCurrentVelocity() const { return currentVelocity; }
+	inline const Color& getColor() const { return color; }
 	inline const sf::CircleShape& getBodyShape() const { return bodyShape; }
 	inline const ArrowShape& getVelocityArrowShape() const { return arrowShape; }
 
@@ -46,9 +48,12 @@ private:
 	sf::Vector2f currentPosition;
 	sf::Vector2f currentVelocity;
 
+	Color color;
 	sf::CircleShape bodyShape;
+	// Arrow displaying the body's initial velocity
 	ArrowShape arrowShape;
 
+	// The path the body travels during the simulation
 	sf::VertexArray trail;
 
 	bool shouldBeDeleted{ false };

@@ -176,14 +176,10 @@ void Editor::updateCelestialBodiesProperties()
 		celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
 
 		// Update shape color
-		const auto color = celestialBody.getBodyShape().getFillColor();
-		float colorInput[3] = { static_cast<float>(color.r) / 255.f,
-			static_cast<float>(color.g) / 255.f,
-			static_cast<float>(color.b) / 255.f };
+		const auto color = celestialBody.getColor();
+		float colorInput[3] = { color.r, color.g, color.b };
 		ImGui::ColorEdit3("Color", colorInput);
-		celestialBody.setColor({ static_cast<sf::Uint8>(colorInput[0] * 255.f),
-			static_cast<sf::Uint8>(colorInput[1] * 255.f),
-			static_cast<sf::Uint8>(colorInput[2] * 255.f) });
+		celestialBody.setColor(Color{ colorInput[0], colorInput[1], colorInput[2] });
 
 		ImGui::Separator();
 

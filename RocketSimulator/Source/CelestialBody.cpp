@@ -100,9 +100,10 @@ void CelestialBody::setInitialVelocity(const sf::Vector2f& newInitialVelocity)
 	arrowShape.setDirection(currentVelocity);
 }
 
-void CelestialBody::setColor(const sf::Color& newColor)
+void CelestialBody::setColor(const Color& newColor)
 {
-	bodyShape.setFillColor(newColor);
+	color = newColor;
+	bodyShape.setFillColor(color.toSFMLColor());
 }
 
 void CelestialBody::clearTrail()

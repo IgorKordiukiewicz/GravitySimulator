@@ -163,6 +163,7 @@
     <ClInclude Include="Include\Application.hpp" />
     <ClInclude Include="Include\ArrowShape.hpp" />
     <ClInclude Include="Include\CelestialBody.hpp" />
+    <ClInclude Include="Include\Color.hpp" />
     <ClInclude Include="Include\Editor.hpp" />
     <ClInclude Include="Include\Universe.hpp" />
     <ClInclude Include="Include\Utils.hpp" />
