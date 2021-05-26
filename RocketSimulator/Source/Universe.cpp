@@ -61,7 +61,7 @@ void Universe::draw(sf::RenderWindow& window)
 		celestialBody.draw(window, simulationState == SimulationState::Reset);
 	}
 	if (rocket) {
-		rocket->draw(window);
+		rocket->draw(window, simulationState == SimulationState::Reset);
 	}
 }
 

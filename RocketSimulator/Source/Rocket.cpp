@@ -20,8 +20,11 @@ void Rocket::update(const std::vector<CelestialBody>& celestialBodies, const flo
 {
 }
 
-void Rocket::draw(sf::RenderWindow& window)
+void Rocket::draw(sf::RenderWindow& window, bool drawArrowShape)
 {
+	if (drawArrowShape) {
+		window.draw(arrowShape);
+	}
 	window.draw(sprite);
 }
 

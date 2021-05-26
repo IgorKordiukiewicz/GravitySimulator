@@ -16,7 +16,9 @@ public:
 
 	void update(const std::vector<CelestialBody>& celestialBodies, const float gravitationalForce, float deltaTime);
 
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window, bool drawArrowShape);
+
+	const sf::Sprite& getSprite() const { return sprite; }
 
 private:
 	virtual void onInitialPositionUpdated() override;

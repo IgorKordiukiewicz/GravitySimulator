@@ -90,6 +90,30 @@ void Editor::grabBody()
 		}
 	}
 
+	// Check if rocket is grabbed
+	// TODO: remove code duplication; code is almost the same as the one for checking if a celestial body is grabbed
+	if (auto* rocket = universe.getRocket(); rocket) {
+		// Check if mouse is clicked and hovered over the body's shape
+		const auto& bodyShape = rocket->getSprite();
+		if (bodyShape.getGlobalBounds().contains(mousePos)
+			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)
+			&& !grabbedBody) { // Prevents switching to another body when the currently grabbed body is dragged over it
+			grabbedBody = rocket;
+			grabbedArrowHead = false;
+			mousePosOnSelect = mousePos;
+		}
+
+		// Check if mouse is clicked and hovered over the body's velocity arrow shape
+		const auto& arrowShape = rocket->getVelocityArrowShape();
+		if (arrowShape.contains(mousePos)
+			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)
+			&& !grabbedBody) { // Prevents switching to another body when the currently grabbed body is dragged over it
+			grabbedBody = rocket;
+			grabbedArrowHead = true;
+			mousePosOnSelect = mousePos;
+		}
+	}
+
 	// Check whether the body is no longer grabbed
 	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		grabbedBody = nullptr;

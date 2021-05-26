@@ -26,7 +26,7 @@ private:
 
 	// Variables for changing the bodies positions or velocities by grabbing their shape or 
 	// their velocity arrow shape and moving it using mouse
-	CelestialBody* grabbedBody{ nullptr };
+	Body* grabbedBody{ nullptr };
 	// Whether the grabbed shape was the body's shape or its velocity arrow
 	bool grabbedArrowHead{ false };
 	sf::Vector2f mousePosOnSelect;
