@@ -1,5 +1,6 @@
 #include "../Include/Universe.hpp"
 #include "../Include/CelestialBody.hpp"
+#include "../Include/Rocket.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -59,6 +60,9 @@ void Universe::draw(sf::RenderWindow& window)
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.draw(window, simulationState == SimulationState::Reset);
 	}
+	if (rocket) {
+		rocket->draw(window);
+	}
 }
 
 void Universe::createNewBody()
@@ -66,6 +70,11 @@ void Universe::createNewBody()
 	// Create new body with some default values	
 	CelestialBody body{ 10.0f, 10.f, {10.f, 10.f},{0.f, 0.f} };
 	celestialBodies.push_back(std::move(body));
+}
+
+void Universe::createRocket()
+{
+	rocket = std::make_unique<Rocket>();
 }
 
 void Universe::setCentralBody(CelestialBody* newCentralBody)

@@ -15,8 +15,8 @@ public:
 	// Check whether a point is inside the shape
 	bool contains(const sf::Vector2f& point) const;
 
-	inline const sf::Vector2f& getStartPos() const { return startPos; }
-	inline const sf::Vector2f& getDirection() const { return direction; }
+	const sf::Vector2f& getStartPos() const { return startPos; }
+	const sf::Vector2f& getDirection() const { return direction; }
 
 private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

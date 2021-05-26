@@ -157,6 +157,7 @@
     <ClCompile Include="Source\ArrowShape.cpp" />
     <ClCompile Include="Source\CelestialBody.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
+    <ClCompile Include="Source\Rocket.cpp" />
     <ClCompile Include="Source\Universe.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="Include\CelestialBody.hpp" />
     <ClInclude Include="Include\Color.hpp" />
     <ClInclude Include="Include\Editor.hpp" />
+    <ClInclude Include="Include\Rocket.hpp" />
     <ClInclude Include="Include\Universe.hpp" />
     <ClInclude Include="Include\Utils.hpp" />
   </ItemGroup>

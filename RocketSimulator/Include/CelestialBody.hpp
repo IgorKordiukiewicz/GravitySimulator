@@ -29,17 +29,17 @@ public:
 	// Resets the body's position and velocity to the initial values
 	void reset();
 
-	inline int getId() const { return id; }
-	inline bool getShouldBeDeleted() const { return shouldBeDeleted; }
-	inline float getMass() const { return mass; }
-	inline float getRadius() const { return radius; }
-	inline const sf::Vector2f& getInitialPosition() const { return initialPosition; }
-	inline const sf::Vector2f& getInitialVelocity() const { return initialVelocity; }
-	inline const sf::Vector2f& getCurrentPosition() const { return currentPosition; }
-	inline const sf::Vector2f& getCurrentVelocity() const { return currentVelocity; }
-	inline const Color& getColor() const { return color; }
-	inline const sf::CircleShape& getBodyShape() const { return bodyShape; }
-	inline const ArrowShape& getVelocityArrowShape() const { return arrowShape; }
+	int getId() const { return id; }
+	bool getShouldBeDeleted() const { return shouldBeDeleted; }
+	float getMass() const { return mass; }
+	float getRadius() const { return radius; }
+	const sf::Vector2f& getInitialPosition() const { return initialPosition; }
+	const sf::Vector2f& getInitialVelocity() const { return initialVelocity; }
+	const sf::Vector2f& getCurrentPosition() const { return currentPosition; }
+	const sf::Vector2f& getCurrentVelocity() const { return currentVelocity; }
+	const Color& getColor() const { return color; }
+	const sf::CircleShape& getBodyShape() const { return bodyShape; }
+	const ArrowShape& getVelocityArrowShape() const { return arrowShape; }
 
 private:
 	float mass{ 1.0 };

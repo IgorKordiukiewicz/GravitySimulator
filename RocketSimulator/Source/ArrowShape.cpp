@@ -1,5 +1,5 @@
 #include "../Include/ArrowShape.hpp"
-#include <SFML/Graphics.hpp>s
+#include <SFML/Graphics.hpp>
 
 ArrowShape::ArrowShape(const sf::Vector2f& startPos, const sf::Vector2f& endPos)
 	: startPos(startPos)

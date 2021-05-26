@@ -9,7 +9,7 @@ Editor::Editor(sf::RenderWindow& window, Universe& universe)
 	: window(window)
 	, universe(universe)
 {
-	
+	universe.createRocket();
 }
 
 void Editor::update()
