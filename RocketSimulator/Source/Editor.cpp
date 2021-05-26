@@ -9,7 +9,7 @@ Editor::Editor(sf::RenderWindow& window, Universe& universe)
 	: window(window)
 	, universe(universe)
 {
-	universe.createRocket();
+	
 }
 
 void Editor::update()
@@ -36,6 +36,25 @@ void Editor::update()
 		ImGui::Separator();
 
 		updateCelestialBodiesProperties();
+		ImGui::Separator();
+
+		ImGui::Text("Rocket");
+		if (!universe.getRocket()) {
+			ImGui::SameLine();
+			if (ImGui::Button("Add rocket")) {
+				universe.createRocket();
+			}
+		}
+
+		if (auto* rocket = universe.getRocket(); rocket) {
+			float positionInput[2] = { rocket->getInitialPosition().x, rocket->getInitialPosition().y };
+			ImGui::InputFloat2("Position", positionInput);
+			rocket->setInitialPosition({ positionInput[0], positionInput[1] });
+
+			float velocityInput[2] = { rocket->getInitialVelocity().x, rocket->getInitialVelocity().y };
+			ImGui::InputFloat2("Velocity", velocityInput);
+			rocket->setInitialVelocity({ velocityInput[0], velocityInput[1] });
+		}
 	}
 
 	ImGui::End();

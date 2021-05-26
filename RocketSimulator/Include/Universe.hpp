@@ -34,6 +34,7 @@ public:
 	void resetSimulation();
 
 	std::vector<CelestialBody>& getCelestialBodies() { return celestialBodies; }
+	Rocket* getRocket() { return rocket.get(); }
 	SimulationState getSimulationState() const { return simulationState; }
 	bool getDrawTrails() const { return drawTrails; }
 
