@@ -86,6 +86,12 @@ void Universe::createRocket()
 	rocket = std::make_unique<Rocket>(gravitationalForce);
 }
 
+void Universe::removeRocket()
+{
+	rocket.reset();
+
+}
+
 void Universe::setCentralBody(CelestialBody* newCentralBody)
 {
 	centralBody = newCentralBody;

@@ -39,10 +39,19 @@ void Editor::update()
 		ImGui::Separator();
 
 		ImGui::Text("Rocket");
+		// Add rocket button only if there is no rocket added
 		if (!universe.getRocket()) {
 			ImGui::SameLine();
 			if (ImGui::Button("Add rocket")) {
 				universe.createRocket();
+			}
+		}
+		// Remove rocket button only if there is a rocket added
+		else {
+			ImGui::SameLine();
+			if (ImGui::Button("Remove rocket")) {
+				universe.removeRocket();
+				bodyOrbitedByRocketId = std::nullopt;
 			}
 		}
 

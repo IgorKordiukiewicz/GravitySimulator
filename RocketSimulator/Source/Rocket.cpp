@@ -8,11 +8,12 @@ Rocket::Rocket(const float gravitationalForce)
 	: gravitationalForce(gravitationalForce)
 	, Body({0.f, 0.f}, {0.f, 0.f})
 {
-	// Initialize sprite	
+	// Load texture	
 	if (!texture.loadFromFile("Resources/rocket.png")) {
 		std::cout << "Couldn't load the rocket texture\n";
 	}
 	texture.setSmooth(true);
+	// Initialize sprite
 	sprite.setTexture(texture);
 	sprite.setScale({ 0.25f, 0.25f });
 	sprite.setOrigin(sprite.getLocalBounds().width / 2.f, sprite.getLocalBounds().height / 2.f);

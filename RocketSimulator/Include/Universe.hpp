@@ -24,6 +24,7 @@ public:
 	void createNewBody();
 
 	void createRocket();
+	void removeRocket();
 
 	void setCentralBody(CelestialBody* newCentralBody);
 	void setDrawTrails(bool newValue);
