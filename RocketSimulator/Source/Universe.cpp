@@ -60,6 +60,9 @@ void Universe::draw(sf::RenderWindow& window)
 		for (auto& celestialBody : celestialBodies) {
 			celestialBody.drawTrail(window);
 		}
+		if (rocket) {
+			rocket->drawTrail(window);
+		}
 	}
 	
 	// Draw the bodies
@@ -113,7 +116,9 @@ void Universe::resetSimulation()
 		celestialBody.reset();
 	}
 
+	// Reset rocket and clear its trail
 	if (rocket) {
 		rocket->reset();
+		rocket->clearTrail();
 	}
 }

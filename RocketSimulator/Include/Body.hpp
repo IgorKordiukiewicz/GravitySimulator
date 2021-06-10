@@ -10,8 +10,12 @@ public:
 	Body(const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity);
 	virtual ~Body() = default;
 
+	void drawTrail(sf::RenderWindow& window);
+
 	// Resets the body's position and velocity to the initial values
 	void reset();
+
+	void clearTrail();
 
 	void setInitialPosition(const sf::Vector2f& newInitialPosition);
 	void setInitialVelocity(const sf::Vector2f& newInitialVelocity);
@@ -31,6 +35,9 @@ protected:
 	sf::Vector2f initialVelocity;
 	sf::Vector2f currentPosition;
 	sf::Vector2f currentVelocity;
+
+	// The path the body travels during the simulation
+	sf::VertexArray trail;
 
 	// Arrow displaying the body's initial velocity
 	ArrowShape arrowShape;

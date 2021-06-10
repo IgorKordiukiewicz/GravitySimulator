@@ -56,11 +56,6 @@ void CelestialBody::updatePosition(float deltaTime)
 	}
 }
 
-void CelestialBody::drawTrail(sf::RenderWindow& window)
-{
-	window.draw(trail);
-}
-
 void CelestialBody::draw(sf::RenderWindow& window, bool drawArrowShape)
 {
 	if (drawArrowShape) {
@@ -86,11 +81,6 @@ void CelestialBody::setColor(const Color& newColor)
 {
 	color = newColor;
 	bodyShape.setFillColor(color.toSFMLColor());
-}
-
-void CelestialBody::clearTrail()
-{
-	trail.clear();
 }
 
 void CelestialBody::markToDelete()

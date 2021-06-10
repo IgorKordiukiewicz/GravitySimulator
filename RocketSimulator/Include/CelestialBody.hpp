@@ -17,13 +17,11 @@ public:
 	void updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime);
 	void updatePosition(float deltaTime);
 
-	void drawTrail(sf::RenderWindow& window);
 	void draw(sf::RenderWindow& window, bool drawArrowShape);
 
 	void setMass(const float newMass);
 	void setRadius(const float newRadius);
 	void setColor(const Color& newColor);
-	void clearTrail();
 	void markToDelete();
 
 	int getId() const { return id; }
@@ -42,9 +40,6 @@ private:
 
 	Color color;
 	sf::CircleShape bodyShape;
-
-	// The path the body travels during the simulation
-	sf::VertexArray trail;
 
 	bool shouldBeDeleted{ false };
 	// The id is assigned on creation, and nextBodyId is incremented

@@ -32,6 +32,19 @@ void Rocket::update(const std::vector<CelestialBody>& celestialBodies, float del
 
 	currentPosition += currentVelocity * deltaTime;
 	updateDrawablesPosition();
+
+	// Update trail
+	if (trail.getVertexCount() >= 1) {
+		// Compare body and last trail point positions casted to int vector to avoid unnecessary trail points
+		const sf::Vector2i posInt(currentPosition);
+		const sf::Vector2i lastTrailPosInt(trail[trail.getVertexCount() - 1].position);
+		if (posInt != lastTrailPosInt) {
+			trail.append({ currentPosition, sf::Color::White });
+		}
+	}
+	else {
+		trail.append({ currentPosition, sf::Color::White });
+	}
 }
 
 void Rocket::draw(sf::RenderWindow& window, bool drawArrowShape)

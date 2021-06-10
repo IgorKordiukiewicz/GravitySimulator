@@ -7,12 +7,22 @@ Body::Body(const sf::Vector2f& initialPosition, const sf::Vector2f& initialVeloc
 {
 }
 
+void Body::drawTrail(sf::RenderWindow& window)
+{
+	window.draw(trail);
+}
+
 void Body::reset()
 {
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
 
 	updateDrawablesPosition();
+}
+
+void Body::clearTrail()
+{
+	trail.clear();
 }
 
 void Body::setInitialPosition(const sf::Vector2f& newInitialPosition)
