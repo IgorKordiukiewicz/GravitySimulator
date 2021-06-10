@@ -46,15 +46,7 @@ void Editor::update()
 			}
 		}
 
-		if (auto* rocket = universe.getRocket(); rocket) {
-			float positionInput[2] = { rocket->getInitialPosition().x, rocket->getInitialPosition().y };
-			ImGui::InputFloat2("Position", positionInput);
-			rocket->setInitialPosition({ positionInput[0], positionInput[1] });
-
-			float velocityInput[2] = { rocket->getInitialVelocity().x, rocket->getInitialVelocity().y };
-			ImGui::InputFloat2("Velocity", velocityInput);
-			rocket->setInitialVelocity({ velocityInput[0], velocityInput[1] });
-		}
+		updateRocket();
 	}
 
 	ImGui::End();
@@ -107,7 +99,8 @@ void Editor::grabBody()
 		const auto& arrowShape = rocket->getVelocityArrowShape();
 		if (arrowShape.contains(mousePos)
 			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)
-			&& !grabbedBody) { // Prevents switching to another body when the currently grabbed body is dragged over it
+			&& !grabbedBody // Prevents switching to another body when the currently grabbed body is dragged over it
+			&& !bodyOrbitedByRocketId.has_value()) { // Prevents changing the rocket's velocity if it is set to orbit a celestial body
 			grabbedBody = rocket;
 			grabbedArrowHead = true;
 			mousePosOnSelect = mousePos;
@@ -172,26 +165,25 @@ void Editor::updateSimulationState()
 void Editor::updateCentralBody()
 {
 	ImGui::Text("Center view around a body:");
+	// If central body is set, the preview text of the combo box will display the body's id, and if not it will display "None"
 	const std::string previewText = centralBodyId.has_value() ? "Body " + std::to_string(centralBodyId.value()) : "None";
+
 	if (ImGui::BeginCombo("", previewText.c_str())) {
-		// None - don't center view around a body
+		// Option to not center the view around any body
 		if (ImGui::Selectable("None", !centralBodyId.has_value())) {
 			centralBodyId = std::nullopt;
 			universe.setCentralBody(nullptr);
 		}
-		if (!centralBodyId.has_value()) {
-			ImGui::SetItemDefaultFocus();
-		}
 
 		for (auto& celestialBody : universe.getCelestialBodies()) {
+			// Check whether this body is the body set to be the central body
 			bool isSelected = centralBodyId.has_value() ? centralBodyId.value() == celestialBody.getId() : false;
+
 			const std::string bodyStr = "Body " + std::to_string(celestialBody.getId());
+			// Option to select this body as the central body
 			if (ImGui::Selectable(bodyStr.c_str(), isSelected)) {
 				centralBodyId.emplace(celestialBody.getId());
 				universe.setCentralBody(&celestialBody);
-			}
-			if (isSelected) {
-				ImGui::SetItemDefaultFocus();
 			}
 		}
 		ImGui::EndCombo();
@@ -258,6 +250,52 @@ void Editor::updateCelestialBodiesProperties()
 
 		ImGui::Separator();
 
+		ImGui::PopID();
+	}
+}
+
+void Editor::updateRocket()
+{
+	if (auto* rocket = universe.getRocket(); rocket) {
+		ImGui::PushID(-1);
+
+		ImGui::Text("Orbit a body:");
+		// If rocket is set to orbit a body, the preview text of the combo box will display the body's id and if not it will display "None"
+		const std::string previewText = bodyOrbitedByRocketId.has_value() ? "Body " + std::to_string(bodyOrbitedByRocketId.value()) : "None";
+
+		if (ImGui::BeginCombo("", previewText.c_str())) {
+			// Option to not orbit any celestial body
+			if (ImGui::Selectable("None", !bodyOrbitedByRocketId.has_value())) {
+				bodyOrbitedByRocketId = std::nullopt;
+			}
+
+			for (const auto& celestialBody : universe.getCelestialBodies()) {
+				// Check whether this body is the body set to be orbited by the rocket
+				bool isSelected = bodyOrbitedByRocketId.has_value() ? bodyOrbitedByRocketId.value() == celestialBody.getId() : false;
+				const std::string bodyStr = "Body " + std::to_string(celestialBody.getId());
+				// Option to orbit this body
+				if (ImGui::Selectable(bodyStr.c_str(), isSelected)) {
+					bodyOrbitedByRocketId.emplace(celestialBody.getId());
+					rocket->orbitCelestialBody(celestialBody);
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		// Position and velocity can only be changed if the rocket is set to not orbit any celestial body
+		if (!bodyOrbitedByRocketId.has_value()) {
+			// Update position
+			float positionInput[2] = { rocket->getInitialPosition().x, rocket->getInitialPosition().y };
+			ImGui::InputFloat2("Position", positionInput);
+			rocket->setInitialPosition({ positionInput[0], positionInput[1] });
+
+			// Update velocity
+			float velocityInput[2] = { rocket->getInitialVelocity().x, rocket->getInitialVelocity().y };
+			ImGui::InputFloat2("Velocity", velocityInput);
+			rocket->setInitialVelocity({ velocityInput[0], velocityInput[1] });
+		}
+		
 		ImGui::PopID();
 	}
 }

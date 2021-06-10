@@ -6,10 +6,12 @@
 
 Universe::Universe()
 {
-	CelestialBody body1{ 10.0f, 10.f, {500.f, 300.f},{50.f, 20.f} };
-	CelestialBody body2{ 5.0f, 5.f, {890.f, 20.f},{-20.f, 10.f} };
+	//CelestialBody body1{ 10.0f, 10.f, {500.f, 300.f},{50.f, 20.f} };
+	//CelestialBody body2{ 5.0f, 5.f, {890.f, 20.f},{-20.f, 10.f} };
+	//celestialBodies.push_back(std::move(body1));
+	//celestialBodies.push_back(std::move(body2));
+	CelestialBody body1{ 10.0f, 10.f, {500.f, 300.f},{0.f, 0.f} };
 	celestialBodies.push_back(std::move(body1));
-	celestialBodies.push_back(std::move(body2));
 }
 
 void Universe::update(float deltaTime)
@@ -34,6 +36,10 @@ void Universe::update(float deltaTime)
 	// Update positions
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.updatePosition(deltaTime);
+	}
+
+	if (rocket) {
+		rocket->update(celestialBodies, deltaTime);
 	}
 }
 
@@ -74,7 +80,7 @@ void Universe::createNewBody()
 
 void Universe::createRocket()
 {
-	rocket = std::make_unique<Rocket>();
+	rocket = std::make_unique<Rocket>(gravitationalForce);
 }
 
 void Universe::setCentralBody(CelestialBody* newCentralBody)
@@ -105,5 +111,9 @@ void Universe::resetSimulation()
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.clearTrail();
 		celestialBody.reset();
+	}
+
+	if (rocket) {
+		rocket->reset();
 	}
 }

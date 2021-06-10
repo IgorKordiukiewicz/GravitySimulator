@@ -98,7 +98,7 @@ void CelestialBody::markToDelete()
 	shouldBeDeleted = true;
 }
 
-void CelestialBody::onInitialPositionUpdated()
+void CelestialBody::updateDrawablesPosition()
 {
-	bodyShape.setPosition(initialPosition);
+	bodyShape.setPosition(currentPosition);
 }

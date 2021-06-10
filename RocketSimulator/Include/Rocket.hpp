@@ -11,19 +11,22 @@ class CelestialBody;
 class Rocket : public Body
 {
 public:
-	Rocket();
-	~Rocket() = default;
+	Rocket(const float gravitationalForce);
 
-	void update(const std::vector<CelestialBody>& celestialBodies, const float gravitationalForce, float deltaTime);
+	void update(const std::vector<CelestialBody>& celestialBodies, float deltaTime);
 
 	void draw(sf::RenderWindow& window, bool drawArrowShape);
+
+	void orbitCelestialBody(const CelestialBody& celestialBody);
 
 	const sf::Sprite& getSprite() const { return sprite; }
 
 private:
-	virtual void onInitialPositionUpdated() override;
+	virtual void updateDrawablesPosition() override;
 
 private:
 	sf::Sprite sprite;
 	sf::Texture texture;
+
+	const float gravitationalForce;
 };

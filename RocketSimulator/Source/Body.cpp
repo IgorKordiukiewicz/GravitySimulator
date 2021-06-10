@@ -11,6 +11,8 @@ void Body::reset()
 {
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
+
+	updateDrawablesPosition();
 }
 
 void Body::setInitialPosition(const sf::Vector2f& newInitialPosition)
@@ -19,7 +21,7 @@ void Body::setInitialPosition(const sf::Vector2f& newInitialPosition)
 	currentPosition = initialPosition;
 
 	arrowShape.setStartPos(currentPosition);
-	onInitialPositionUpdated();
+	updateDrawablesPosition();
 }
 
 void Body::setInitialVelocity(const sf::Vector2f& newInitialVelocity)

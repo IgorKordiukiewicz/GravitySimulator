@@ -34,7 +34,7 @@ public:
 	const sf::CircleShape& getBodyShape() const { return bodyShape; }
 
 private:
-	virtual void onInitialPositionUpdated() override;
+	virtual void updateDrawablesPosition() override;
 
 private:
 	float mass{ 1.0 };

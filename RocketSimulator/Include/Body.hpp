@@ -23,7 +23,8 @@ public:
 	const ArrowShape& getVelocityArrowShape() const { return arrowShape; }
 
 protected:
-	virtual void onInitialPositionUpdated() {}
+	// TODO: change name
+	virtual void updateDrawablesPosition() {}
 
 protected:
 	sf::Vector2f initialPosition;

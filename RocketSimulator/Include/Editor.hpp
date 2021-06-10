@@ -9,7 +9,6 @@ class Editor
 {
 public:
 	Editor(sf::RenderWindow& window, Universe& universe);
-	~Editor() = default;
 
 	void update();
 
@@ -19,6 +18,7 @@ private:
 	void updateCentralBody();
 	void updateDrawTrailsOption();
 	void updateCelestialBodiesProperties();
+	void updateRocket();
 
 private:
 	sf::RenderWindow& window;
@@ -32,4 +32,5 @@ private:
 	sf::Vector2f mousePosOnSelect;
 
 	std::optional<int> centralBodyId;
+	std::optional<int> bodyOrbitedByRocketId;
 };
