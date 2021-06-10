@@ -56,21 +56,42 @@ void Rocket::draw(sf::RenderWindow& window, bool drawArrowShape)
 	window.draw(sprite);
 }
 
-void Rocket::orbitCelestialBody(const CelestialBody& celestialBody)
+void Rocket::setInitialBodyToOrbit(CelestialBody* newInitialBodyToOrbit)
 {
-	const float distanceFromBody = celestialBody.getRadius() / 2.f + 30.f;
+	initialBodyToOrbit = newInitialBodyToOrbit;
+	updateInitialOrbit();
+}
 
-	const sf::Vector2f newInitialPosition = { celestialBody.getInitialPosition().x + distanceFromBody, celestialBody.getInitialPosition().y };
+void Rocket::updateInitialOrbit()
+{
+	if (!initialBodyToOrbit) {
+		return;
+	}
+	
+	const float distanceFromBody = initialBodyToOrbit->getRadius() / 2.f + initialOrbitHeight;
+
+	const sf::Vector2f newInitialPosition = { initialBodyToOrbit->getInitialPosition().x + distanceFromBody, initialBodyToOrbit->getInitialPosition().y };
 	setInitialPosition(newInitialPosition);
 
 	const float PI = 3.14159f;
 	const float theta = 90.f * (PI / 180.f);
 	const float cos = std::cos(theta);
 	const float sin = std::sin(theta);
-	const sf::Vector2f direction = utils::getNormalizedVector(sf::Vector2f(celestialBody.getInitialPosition() - initialPosition));
+	const sf::Vector2f direction = utils::getNormalizedVector(sf::Vector2f(initialBodyToOrbit->getInitialPosition() - initialPosition));
 	const sf::Vector2f directionRotated = { direction.x * cos - direction.y * sin, direction.x * sin + direction.y * cos };
-	const sf::Vector2f newInitialVelocity = directionRotated * sqrt((gravitationalForce * celestialBody.getMass()) / distanceFromBody);
+	const sf::Vector2f newInitialVelocity = directionRotated * sqrt((gravitationalForce * initialBodyToOrbit->getMass()) / distanceFromBody);
 	setInitialVelocity(newInitialVelocity);
+}
+
+void Rocket::setInitialOrbitHeight(const float newInitialOrbitHeight)
+{
+	const float oldInitialOrbitHeight = initialOrbitHeight;
+	initialOrbitHeight = newInitialOrbitHeight;
+
+	// Only update the initial orbit if the initial orbit height value was changed
+	if (oldInitialOrbitHeight != initialOrbitHeight) {
+		updateInitialOrbit();
+	}
 }
 
 void Rocket::updateDrawablesPosition()

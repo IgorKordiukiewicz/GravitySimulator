@@ -136,6 +136,14 @@ void Editor::grabBody()
 		else {
 			grabbedBody->setInitialPosition(grabbedBody->getInitialPosition() + posDiff);
 		}
+
+		// If position was changed and the body is the celestial body orbited by the rocket, update the rocket's initial orbit
+		if (auto* rocket = universe.getRocket(); rocket
+			&& posDiff != sf::Vector2f(0.f, 0.f)
+			&& dynamic_cast<CelestialBody*>(grabbedBody)
+			&& bodyOrbitedByRocketId.value_or(-1) == dynamic_cast<CelestialBody*>(grabbedBody)->getId()) {
+			rocket->updateInitialOrbit();
+		}
 	}
 }
 
@@ -232,24 +240,32 @@ void Editor::updateCelestialBodiesProperties()
 		}
 
 		// Update mass
+		const float oldMass = celestialBody.getMass();
 		float massInput = celestialBody.getMass();
 		ImGui::InputFloat("Mass", &massInput);
 		celestialBody.setMass(massInput);
+		bool massChanged = oldMass != celestialBody.getMass();
 
 		// Update radius
+		const float oldRadius = celestialBody.getRadius();
 		float radiusInput = celestialBody.getRadius();
 		ImGui::InputFloat("Radius", &radiusInput);
 		celestialBody.setRadius(radiusInput);
+		bool radiusChanged = oldRadius != celestialBody.getRadius();
 
 		// Update initial position
+		const sf::Vector2f oldPosition = celestialBody.getCurrentPosition();
 		float positionInput[2] = { celestialBody.getCurrentPosition().x, celestialBody.getCurrentPosition().y };
 		ImGui::InputFloat2("Position", positionInput);
 		celestialBody.setInitialPosition({ positionInput[0], positionInput[1] });
+		bool positionChanged = oldPosition != celestialBody.getInitialPosition();
 
 		// Update initial velocity
+		const sf::Vector2f oldVelocity = celestialBody.getCurrentVelocity();
 		float velocityInput[2] = { celestialBody.getCurrentVelocity().x, celestialBody.getCurrentVelocity().y };
 		ImGui::InputFloat2("Velocity", velocityInput);
 		celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
+		bool velocityChanged = oldVelocity != celestialBody.getInitialVelocity();
 
 		// Update shape color
 		const auto color = celestialBody.getColor();
@@ -258,6 +274,16 @@ void Editor::updateCelestialBodiesProperties()
 		celestialBody.setColor(Color{ colorInput[0], colorInput[1], colorInput[2] });
 
 		ImGui::Separator();
+
+		bool anyPropertyChanged = massChanged || radiusChanged || positionChanged || velocityChanged;
+		// If there is a rocket, this body is the body initially orbited by the rocket and
+		// the body's properties were changed, update the rocket initial orbit
+		if (auto* rocket = universe.getRocket(); rocket 
+			&& bodyOrbitedByRocketId.has_value() 
+			&& bodyOrbitedByRocketId.value() == celestialBody.getId()
+			&& anyPropertyChanged) {
+			rocket->updateInitialOrbit();
+		}
 
 		ImGui::PopID();
 	}
@@ -276,24 +302,31 @@ void Editor::updateRocket()
 			// Option to not orbit any celestial body
 			if (ImGui::Selectable("None", !bodyOrbitedByRocketId.has_value())) {
 				bodyOrbitedByRocketId = std::nullopt;
+				rocket->setInitialBodyToOrbit(nullptr);
 			}
 
-			for (const auto& celestialBody : universe.getCelestialBodies()) {
+			for (auto& celestialBody : universe.getCelestialBodies()) {
 				// Check whether this body is the body set to be orbited by the rocket
 				bool isSelected = bodyOrbitedByRocketId.has_value() ? bodyOrbitedByRocketId.value() == celestialBody.getId() : false;
 				const std::string bodyStr = "Body " + std::to_string(celestialBody.getId());
 				// Option to orbit this body
 				if (ImGui::Selectable(bodyStr.c_str(), isSelected)) {
 					bodyOrbitedByRocketId.emplace(celestialBody.getId());
-					rocket->orbitCelestialBody(celestialBody);
+					rocket->setInitialBodyToOrbit(&celestialBody);
 				}
 			}
 
 			ImGui::EndCombo();
 		}
-
+		
+		if (bodyOrbitedByRocketId.has_value()) {
+			// Update initial orbit height
+			float initialOrbitHeightInput = rocket->getInitialOrbitHeight();
+			ImGui::InputFloat("Orbit Height", &initialOrbitHeightInput);
+			rocket->setInitialOrbitHeight(initialOrbitHeightInput);
+		}
 		// Position and velocity can only be changed if the rocket is set to not orbit any celestial body
-		if (!bodyOrbitedByRocketId.has_value()) {
+		else {
 			// Update position
 			float positionInput[2] = { rocket->getInitialPosition().x, rocket->getInitialPosition().y };
 			ImGui::InputFloat2("Position", positionInput);

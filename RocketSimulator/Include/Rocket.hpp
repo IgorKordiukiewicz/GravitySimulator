@@ -17,9 +17,13 @@ public:
 
 	void draw(sf::RenderWindow& window, bool drawArrowShape);
 
-	void orbitCelestialBody(const CelestialBody& celestialBody);
+	void setInitialBodyToOrbit(CelestialBody* newInitialBodyToOrbit);
+	void updateInitialOrbit();
+
+	void setInitialOrbitHeight(const float newInitialOrbitHeight);
 
 	const sf::Sprite& getSprite() const { return sprite; }
+	float getInitialOrbitHeight() const { return initialOrbitHeight; }
 
 private:
 	virtual void updateDrawablesPosition() override;
@@ -29,4 +33,7 @@ private:
 	sf::Texture texture;
 
 	const float gravitationalForce;
+
+	CelestialBody* initialBodyToOrbit{ nullptr };
+	float initialOrbitHeight{ 30.f };
 };
