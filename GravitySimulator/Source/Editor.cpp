@@ -186,31 +186,33 @@ void Editor::updateCelestialBodiesProperties()
 			}
 		}
 
-		// Update mass
-		float massInput = celestialBody.getMass();
-		ImGui::InputFloat("Mass", &massInput);
-		celestialBody.setMass(massInput);
+		if (ImGui::CollapsingHeader("Properties")) {
+			// Update mass
+			float massInput = celestialBody.getMass();
+			ImGui::InputFloat("Mass", &massInput);
+			celestialBody.setMass(massInput);
 
-		// Update radius
-		float radiusInput = celestialBody.getRadius();
-		ImGui::InputFloat("Radius", &radiusInput);
-		celestialBody.setRadius(radiusInput);
+			// Update radius
+			float radiusInput = celestialBody.getRadius();
+			ImGui::InputFloat("Radius", &radiusInput);
+			celestialBody.setRadius(radiusInput);
 
-		// Update initial position
-		float positionInput[2] = { celestialBody.getCurrentPosition().x, celestialBody.getCurrentPosition().y };
-		ImGui::InputFloat2("Position", positionInput);
-		celestialBody.setInitialPosition({ positionInput[0], positionInput[1] });
+			// Update initial position
+			float positionInput[2] = { celestialBody.getCurrentPosition().x, celestialBody.getCurrentPosition().y };
+			ImGui::InputFloat2("Position", positionInput);
+			celestialBody.setInitialPosition({ positionInput[0], positionInput[1] });
 
-		// Update initial velocity
-		float velocityInput[2] = { celestialBody.getCurrentVelocity().x, celestialBody.getCurrentVelocity().y };
-		ImGui::InputFloat2("Velocity", velocityInput);
-		celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
+			// Update initial velocity
+			float velocityInput[2] = { celestialBody.getCurrentVelocity().x, celestialBody.getCurrentVelocity().y };
+			ImGui::InputFloat2("Velocity", velocityInput);
+			celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
 
-		// Update shape color
-		const auto color = celestialBody.getColor();
-		float colorInput[3] = { color.r, color.g, color.b };
-		ImGui::ColorEdit3("Color", colorInput);
-		celestialBody.setColor(Color{ colorInput[0], colorInput[1], colorInput[2] });
+			// Update shape color
+			const auto color = celestialBody.getColor();
+			float colorInput[3] = { color.r, color.g, color.b };
+			ImGui::ColorEdit3("Color", colorInput);
+			celestialBody.setColor(Color{ colorInput[0], colorInput[1], colorInput[2] });
+		}
 
 		ImGui::Separator();
 
