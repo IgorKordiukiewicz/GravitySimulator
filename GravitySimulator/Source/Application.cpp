@@ -16,7 +16,6 @@ Application::Application()
 
 	// Add custom font
 	ImGuiIO& io = ImGui::GetIO();
-	//auto* font = io.Fonts->AddFontFromFileTTF("SourceSansPro-ExtraLight.ttf", 14.f);
 	auto* font = io.Fonts->AddFontFromFileTTF("Resources/bahnschrift.ttf", 16.f);
 	ImGui::SFML::UpdateFontTexture();
 	editor.setFont(font);
@@ -44,14 +43,14 @@ void Application::run()
 
 		window.clear();
 
-		editor.update();
-
 		// Calculate fps
 		const int fps = static_cast<int>(1.f / deltaTime);
 		fpsText.setString(std::to_string(fps));
 
 		// Render
 		universe.draw(window);
+
+		editor.update();
 
 		// Reset view to draw the text
 		auto view = window.getView();

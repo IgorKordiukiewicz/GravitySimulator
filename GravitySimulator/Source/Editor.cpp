@@ -28,6 +28,19 @@ void Editor::update()
 	
 	updateSimulationState();
 
+	// Allow to save screenshots when the simulation is paused
+	if (universe.getSimulationState() == SimulationState::Paused) {
+		if (ImGui::Button("Save screenshot")) {
+			sf::Texture texture;
+			texture.create(window.getSize().x, window.getSize().y);
+			texture.update(window);
+			if (texture.copyToImage().saveToFile("screenshot" + std::to_string(screenshotId) + ".png")) {
+				++screenshotId;
+			}
+		}
+		ImGui::Separator();
+	}
+
 	updateCentralBody();
 
 	updateDrawTrailsOption();

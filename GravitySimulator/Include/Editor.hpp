@@ -36,4 +36,6 @@ private:
 	std::optional<int> centralBodyId;
 
 	ImFont* font{ nullptr };
+
+	int screenshotId{ 0 };
 };
