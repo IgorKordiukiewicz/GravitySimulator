@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "../Include/Universe.hpp"
 #include "../Include/Editor.hpp"
+#include "../Include/Camera.hpp"
 
 class Application
 {
@@ -18,4 +19,5 @@ private:
 	sf::RenderWindow window;
 	Universe universe;
 	Editor editor;
+	Camera camera;
 };

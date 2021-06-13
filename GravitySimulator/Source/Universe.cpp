@@ -52,21 +52,10 @@ void Universe::update(float deltaTime)
 			}
 		}
 	}
-	std::cout << '\n';
 }
 
 void Universe::draw(sf::RenderWindow& window)
-{
-	// If central body is set, then center the view around it
-	if (centralBody) {
-		sf::View view = window.getView();
-		view.setCenter(centralBody->getCurrentPosition());
-		window.setView(view);
-	}
-	else {
-		window.setView(window.getDefaultView());
-	}
-	
+{	
 	// Draw the trails first, so that a trail is never drawn over a celestial body
 	if (drawTrails) {
 		for (auto& celestialBody : celestialBodies) {

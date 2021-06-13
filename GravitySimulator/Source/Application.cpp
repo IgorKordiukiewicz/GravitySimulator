@@ -5,7 +5,7 @@
 #include <iostream>
 
 Application::Application()
-	: editor(window, universe)
+	: editor(window, universe), camera(window, universe)
 {
 	// Initialize window
 	sf::ContextSettings contextSettings;
@@ -30,8 +30,10 @@ void Application::run()
 
 		processEvents();
 
+		// Update
 		ImGui::SFML::Update(window, sf::seconds(deltaTime));
 		universe.update(deltaTime);
+		camera.update(deltaTime);
 
 		window.clear();
 

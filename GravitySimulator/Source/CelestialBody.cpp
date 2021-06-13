@@ -139,5 +139,6 @@ void CelestialBody::reset()
 {
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
+	bodyShape.setPosition(currentPosition);
 	destroyed = false;
 }

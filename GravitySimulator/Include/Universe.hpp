@@ -31,6 +31,7 @@ public:
 
 	std::vector<CelestialBody>& getCelestialBodies() { return celestialBodies; }
 	SimulationState getSimulationState() const { return simulationState; }
+	CelestialBody* getCentralBody() const { return centralBody; }
 	bool getDrawTrails() const { return drawTrails; }
 
 private:
@@ -43,6 +44,7 @@ private:
 
 	// Central body is the body the view is centered around
 	CelestialBody* centralBody{ nullptr };
+
 	// Whether to display the paths the bodies make
 	bool drawTrails{ true };
 };
