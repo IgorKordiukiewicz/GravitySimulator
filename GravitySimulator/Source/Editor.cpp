@@ -186,7 +186,7 @@ void Editor::updateCelestialBodiesProperties()
 			}
 		}
 
-		if (ImGui::CollapsingHeader("Properties")) {
+		if (ImGui::TreeNode("Properties")) {
 			// Update mass
 			float massInput = celestialBody.getMass();
 			ImGui::InputFloat("Mass", &massInput);
@@ -212,6 +212,8 @@ void Editor::updateCelestialBodiesProperties()
 			float colorInput[3] = { color.r, color.g, color.b };
 			ImGui::ColorEdit3("Color", colorInput);
 			celestialBody.setColor(Color{ colorInput[0], colorInput[1], colorInput[2] });
+
+			ImGui::TreePop();
 		}
 
 		ImGui::Separator();
