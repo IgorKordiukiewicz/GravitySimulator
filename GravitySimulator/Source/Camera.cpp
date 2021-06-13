@@ -20,6 +20,7 @@ void Camera::update(float deltaTime)
 	// If simulation state just changed to running from reset, reset the unlocked view to the default view
 	if (lastSimulationState == SimulationState::Reset && simulationState == SimulationState::Running) {
 		unlockedView = window.getDefaultView();
+		//unlockedView.setSize(unlockedView.getSize() * zoom);
 	}
 	lastSimulationState = simulationState;
 	
@@ -39,6 +40,7 @@ void Camera::update(float deltaTime)
 		}
 	}
 
+	// Apply view to the window
 	if (unlocked) {
 		window.setView(unlockedView);
 	}
@@ -55,4 +57,21 @@ void Camera::update(float deltaTime)
 			window.setView(window.getDefaultView());
 		}
 	}
+
+	// Apply zoom to the view
+	auto zoomedView = window.getView();
+	zoomedView.setSize(window.getDefaultView().getSize() * zoom);
+	window.setView(zoomedView);
+}
+
+void Camera::zoomIn()
+{
+	zoom -= zoomSpeed;
+	zoom = std::clamp(zoom, 0.f, 10.f);
+}
+
+void Camera::zoomOut()
+{
+	zoom += zoomSpeed;
+	zoom = std::clamp(zoom, 0.f, 10.f);
 }

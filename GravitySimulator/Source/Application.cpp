@@ -10,7 +10,7 @@ Application::Application()
 	// Initialize window
 	sf::ContextSettings contextSettings;
 	contextSettings.antialiasingLevel = 8;
-	window.create(sf::VideoMode(1600, 900), "Rocket Simulator", sf::Style::Default, contextSettings);
+	window.create(sf::VideoMode(1600, 900), "Gravity Simulator", sf::Style::Default, contextSettings);
 	window.setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(window);
 }
@@ -67,6 +67,14 @@ void Application::processEvents()
 
 		if (event.type == sf::Event::Closed) {
 			window.close();
+		}
+		else if (event.type == sf::Event::MouseWheelScrolled) {
+			if (event.mouseWheelScroll.delta > 0) {
+				camera.zoomIn();
+			}
+			else if (event.mouseWheelScroll.delta < 0) {
+				camera.zoomOut();
+			}
 		}
 	}
 }

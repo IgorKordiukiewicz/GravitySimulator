@@ -13,12 +13,19 @@ public:
 
 	void update(float deltaTime);
 
+	void zoomIn();
+	void zoomOut();
+
 private:
 	sf::RenderWindow& window;
 	Universe& universe;
 
 	SimulationState lastSimulationState;
 
+	sf::View view;
 	sf::View unlockedView;
+
 	float moveSpeed{ 100.f };
+	float zoomSpeed{ 0.05f };
+	float zoom = 1.f;
 };
