@@ -4,6 +4,7 @@
 #include "../Include/Universe.hpp"
 #include "../Include/Editor.hpp"
 #include "../Include/Camera.hpp"
+#include <imgui.h>
 
 class Application
 {

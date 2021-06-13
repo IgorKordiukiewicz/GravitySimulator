@@ -13,13 +13,20 @@ Application::Application()
 	window.create(sf::VideoMode(1600, 900), "Gravity Simulator", sf::Style::Default, contextSettings);
 	window.setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(window);
+
+	// Add custom font
+	ImGuiIO& io = ImGui::GetIO();
+	//auto* font = io.Fonts->AddFontFromFileTTF("SourceSansPro-ExtraLight.ttf", 14.f);
+	auto* font = io.Fonts->AddFontFromFileTTF("Resources/bahnschrift.ttf", 16.f);
+	ImGui::SFML::UpdateFontTexture();
+	editor.setFont(font);
 }
 
 void Application::run()
 {
 	sf::Text fpsText;
 	sf::Font font;
-	font.loadFromFile("SourceSansPro-ExtraLight.ttf");
+	font.loadFromFile("Resources/SourceSansPro-ExtraLight.ttf");
 	fpsText.setFont(font);
 	fpsText.setCharacterSize(40);
 	

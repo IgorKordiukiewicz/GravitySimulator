@@ -4,6 +4,7 @@
 #include <vector>
 #include "Universe.hpp"
 #include <optional>
+#include <imgui.h>
 
 class Editor
 {
@@ -11,6 +12,8 @@ public:
 	Editor(sf::RenderWindow& window, Universe& universe);
 
 	void update();
+
+	void setFont(ImFont* newFont);
 
 private:
 	void grabBody();
@@ -31,4 +34,6 @@ private:
 	sf::Vector2f mousePosOnSelect;
 
 	std::optional<int> centralBodyId;
+
+	ImFont* font{ nullptr };
 };

@@ -9,7 +9,7 @@ Editor::Editor(sf::RenderWindow& window, Universe& universe)
 	: window(window)
 	, universe(universe)
 {
-	
+
 }
 
 void Editor::update()
@@ -19,8 +19,13 @@ void Editor::update()
 		grabBody();
 	}
 
-	ImGui::Begin("Editor");
+	// Set font
+	if (font) {
+		ImGui::PushFont(font);
+	}
 
+	ImGui::Begin("Editor");
+	
 	updateSimulationState();
 
 	updateCentralBody();
@@ -38,7 +43,16 @@ void Editor::update()
 		updateCelestialBodiesProperties();
 	}
 
+	if (font) {
+		ImGui::PopFont();
+	}
+
 	ImGui::End();
+}
+
+void Editor::setFont(ImFont* newFont)
+{
+	font = newFont;
 }
 
 void Editor::grabBody()
