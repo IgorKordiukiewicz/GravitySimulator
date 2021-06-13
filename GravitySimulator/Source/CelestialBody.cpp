@@ -24,8 +24,12 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 
 void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime)
 {
+	if (destroyed) {
+		return;
+	}
+	
 	for (const auto& otherBody : otherBodies) {
-		if (otherBody.getId() == id) {
+		if (otherBody.getId() == id || otherBody.isDestroyed()) {
 			continue;
 		}
 
@@ -41,6 +45,10 @@ void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies
 
 void CelestialBody::updatePosition(float deltaTime)
 {	
+	if (destroyed) {
+		return;
+	}
+	
 	currentPosition += currentVelocity * deltaTime;
 	bodyShape.setPosition(currentPosition);
 
@@ -59,12 +67,16 @@ void CelestialBody::updatePosition(float deltaTime)
 }
 
 void CelestialBody::drawTrail(sf::RenderWindow& window)
-{
+{	
 	window.draw(trail);
 }
 
 void CelestialBody::draw(sf::RenderWindow& window, bool drawArrowShape)
 {
+	if (destroyed) {
+		return;
+	}
+	
 	if (drawArrowShape) {
 		window.draw(arrowShape);
 	}
@@ -118,8 +130,14 @@ void CelestialBody::markToDelete()
 	shouldBeDeleted = true;
 }
 
+void CelestialBody::destroy()
+{
+	destroyed = true;
+}
+
 void CelestialBody::reset()
 {
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
+	destroyed = false;
 }

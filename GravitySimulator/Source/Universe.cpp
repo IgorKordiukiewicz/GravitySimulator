@@ -34,6 +34,25 @@ void Universe::update(float deltaTime)
 	for (auto& celestialBody : celestialBodies) {
 		celestialBody.updatePosition(deltaTime);
 	}
+
+	// Check for collisions
+	for (int i = 0; i < celestialBodies.size(); ++i) {
+		// Start at i to avoid checking for collision between 2 bodies twice
+		for (int j = i; j < celestialBodies.size(); ++j) {
+			if (i == j || celestialBodies[i].isDestroyed() || celestialBodies[j].isDestroyed()) {
+				continue;
+			}
+			
+			const auto& shape1 = celestialBodies[i].getBodyShape();
+			const auto& shape2 = celestialBodies[j].getBodyShape();
+			// Destroy the bodies if collision occured
+			if (shape1.getGlobalBounds().intersects(shape2.getGlobalBounds())) {
+				celestialBodies[i].destroy();
+				celestialBodies[j].destroy();
+			}
+		}
+	}
+	std::cout << '\n';
 }
 
 void Universe::draw(sf::RenderWindow& window)

@@ -26,12 +26,16 @@ public:
 	void setColor(const Color& newColor);
 
 	void clearTrail();
+	// Marks this body to be completely deleted from the universe
 	void markToDelete();
+	// Used to remove this body from the current simulation, but the body will still exist when the simulation is reset
+	void destroy();
 	// Resets the body's position and velocity to the initial values
 	void reset();
 
 	int getId() const { return id; }
 	bool getShouldBeDeleted() const { return shouldBeDeleted; }
+	bool isDestroyed() const { return destroyed; }
 	float getMass() const { return mass; }
 	float getRadius() const { return radius; }
 	const sf::Vector2f& getInitialPosition() const { return initialPosition; }
@@ -59,6 +63,7 @@ private:
 	sf::VertexArray trail;
 
 	bool shouldBeDeleted{ false };
+	bool destroyed{ false };
 	// The id is assigned on creation, and nextBodyId is incremented
 	int id{ 0 };
 	inline static int nextBodyId = 1;
