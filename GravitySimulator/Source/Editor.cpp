@@ -36,26 +36,6 @@ void Editor::update()
 		ImGui::Separator();
 
 		updateCelestialBodiesProperties();
-		ImGui::Separator();
-
-		ImGui::Text("Rocket");
-		// Add rocket button only if there is no rocket added
-		if (!universe.getRocket()) {
-			ImGui::SameLine();
-			if (ImGui::Button("Add rocket")) {
-				universe.createRocket();
-			}
-		}
-		// Remove rocket button only if there is a rocket added
-		else {
-			ImGui::SameLine();
-			if (ImGui::Button("Remove rocket")) {
-				universe.removeRocket();
-				bodyOrbitedByRocketId = std::nullopt;
-			}
-		}
-
-		updateRocket();
 	}
 
 	ImGui::End();
@@ -91,31 +71,6 @@ void Editor::grabBody()
 		}
 	}
 
-	// Check if rocket is grabbed
-	// TODO: remove code duplication; code is almost the same as the one for checking if a celestial body is grabbed
-	if (auto* rocket = universe.getRocket(); rocket) {
-		// Check if mouse is clicked and hovered over the body's shape
-		const auto& bodyShape = rocket->getSprite();
-		if (bodyShape.getGlobalBounds().contains(mousePos)
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)
-			&& !grabbedBody) { // Prevents switching to another body when the currently grabbed body is dragged over it
-			grabbedBody = rocket;
-			grabbedArrowHead = false;
-			mousePosOnSelect = mousePos;
-		}
-
-		// Check if mouse is clicked and hovered over the body's velocity arrow shape
-		const auto& arrowShape = rocket->getVelocityArrowShape();
-		if (arrowShape.contains(mousePos)
-			&& sf::Mouse::isButtonPressed(sf::Mouse::Left)
-			&& !grabbedBody // Prevents switching to another body when the currently grabbed body is dragged over it
-			&& !bodyOrbitedByRocketId.has_value()) { // Prevents changing the rocket's velocity if it is set to orbit a celestial body
-			grabbedBody = rocket;
-			grabbedArrowHead = true;
-			mousePosOnSelect = mousePos;
-		}
-	}
-
 	// Check whether the body is no longer grabbed
 	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
 		grabbedBody = nullptr;
@@ -135,14 +90,6 @@ void Editor::grabBody()
 		}
 		else {
 			grabbedBody->setInitialPosition(grabbedBody->getInitialPosition() + posDiff);
-		}
-
-		// If position was changed and the body is the celestial body orbited by the rocket, update the rocket's initial orbit
-		if (auto* rocket = universe.getRocket(); rocket
-			&& posDiff != sf::Vector2f(0.f, 0.f)
-			&& dynamic_cast<CelestialBody*>(grabbedBody)
-			&& bodyOrbitedByRocketId.value_or(-1) == dynamic_cast<CelestialBody*>(grabbedBody)->getId()) {
-			rocket->updateInitialOrbit();
 		}
 	}
 }
@@ -240,32 +187,24 @@ void Editor::updateCelestialBodiesProperties()
 		}
 
 		// Update mass
-		const float oldMass = celestialBody.getMass();
 		float massInput = celestialBody.getMass();
 		ImGui::InputFloat("Mass", &massInput);
 		celestialBody.setMass(massInput);
-		bool massChanged = oldMass != celestialBody.getMass();
 
 		// Update radius
-		const float oldRadius = celestialBody.getRadius();
 		float radiusInput = celestialBody.getRadius();
 		ImGui::InputFloat("Radius", &radiusInput);
 		celestialBody.setRadius(radiusInput);
-		bool radiusChanged = oldRadius != celestialBody.getRadius();
 
 		// Update initial position
-		const sf::Vector2f oldPosition = celestialBody.getCurrentPosition();
 		float positionInput[2] = { celestialBody.getCurrentPosition().x, celestialBody.getCurrentPosition().y };
 		ImGui::InputFloat2("Position", positionInput);
 		celestialBody.setInitialPosition({ positionInput[0], positionInput[1] });
-		bool positionChanged = oldPosition != celestialBody.getInitialPosition();
 
 		// Update initial velocity
-		const sf::Vector2f oldVelocity = celestialBody.getCurrentVelocity();
 		float velocityInput[2] = { celestialBody.getCurrentVelocity().x, celestialBody.getCurrentVelocity().y };
 		ImGui::InputFloat2("Velocity", velocityInput);
 		celestialBody.setInitialVelocity({ velocityInput[0], velocityInput[1] });
-		bool velocityChanged = oldVelocity != celestialBody.getInitialVelocity();
 
 		// Update shape color
 		const auto color = celestialBody.getColor();
@@ -275,69 +214,6 @@ void Editor::updateCelestialBodiesProperties()
 
 		ImGui::Separator();
 
-		bool anyPropertyChanged = massChanged || radiusChanged || positionChanged || velocityChanged;
-		// If there is a rocket, this body is the body initially orbited by the rocket and
-		// the body's properties were changed, update the rocket initial orbit
-		if (auto* rocket = universe.getRocket(); rocket 
-			&& bodyOrbitedByRocketId.has_value() 
-			&& bodyOrbitedByRocketId.value() == celestialBody.getId()
-			&& anyPropertyChanged) {
-			rocket->updateInitialOrbit();
-		}
-
-		ImGui::PopID();
-	}
-}
-
-void Editor::updateRocket()
-{
-	if (auto* rocket = universe.getRocket(); rocket) {
-		ImGui::PushID(-1);
-
-		ImGui::Text("Orbit a body:");
-		// If rocket is set to orbit a body, the preview text of the combo box will display the body's id and if not it will display "None"
-		const std::string previewText = bodyOrbitedByRocketId.has_value() ? "Body " + std::to_string(bodyOrbitedByRocketId.value()) : "None";
-
-		if (ImGui::BeginCombo("", previewText.c_str())) {
-			// Option to not orbit any celestial body
-			if (ImGui::Selectable("None", !bodyOrbitedByRocketId.has_value())) {
-				bodyOrbitedByRocketId = std::nullopt;
-				rocket->setInitialBodyToOrbit(nullptr);
-			}
-
-			for (auto& celestialBody : universe.getCelestialBodies()) {
-				// Check whether this body is the body set to be orbited by the rocket
-				bool isSelected = bodyOrbitedByRocketId.has_value() ? bodyOrbitedByRocketId.value() == celestialBody.getId() : false;
-				const std::string bodyStr = "Body " + std::to_string(celestialBody.getId());
-				// Option to orbit this body
-				if (ImGui::Selectable(bodyStr.c_str(), isSelected)) {
-					bodyOrbitedByRocketId.emplace(celestialBody.getId());
-					rocket->setInitialBodyToOrbit(&celestialBody);
-				}
-			}
-
-			ImGui::EndCombo();
-		}
-		
-		if (bodyOrbitedByRocketId.has_value()) {
-			// Update initial orbit height
-			float initialOrbitHeightInput = rocket->getInitialOrbitHeight();
-			ImGui::InputFloat("Orbit Height", &initialOrbitHeightInput);
-			rocket->setInitialOrbitHeight(initialOrbitHeightInput);
-		}
-		// Position and velocity can only be changed if the rocket is set to not orbit any celestial body
-		else {
-			// Update position
-			float positionInput[2] = { rocket->getInitialPosition().x, rocket->getInitialPosition().y };
-			ImGui::InputFloat2("Position", positionInput);
-			rocket->setInitialPosition({ positionInput[0], positionInput[1] });
-
-			// Update velocity
-			float velocityInput[2] = { rocket->getInitialVelocity().x, rocket->getInitialVelocity().y };
-			ImGui::InputFloat2("Velocity", velocityInput);
-			rocket->setInitialVelocity({ velocityInput[0], velocityInput[1] });
-		}
-		
 		ImGui::PopID();
 	}
 }

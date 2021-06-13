@@ -4,9 +4,11 @@
 #include "../Include/Utils.hpp"
 
 CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity)
-	: Body(initialPosition, initialVelocity)
-	, mass(mass)
+	: mass(mass)
 	, radius(radius)
+	, initialPosition(initialPosition)
+	, initialVelocity(initialVelocity)
+	, arrowShape(initialPosition, initialVelocity)
 	, id(nextBodyId++)
 {	
 	currentPosition = initialPosition;
@@ -56,6 +58,11 @@ void CelestialBody::updatePosition(float deltaTime)
 	}
 }
 
+void CelestialBody::drawTrail(sf::RenderWindow& window)
+{
+	window.draw(trail);
+}
+
 void CelestialBody::draw(sf::RenderWindow& window, bool drawArrowShape)
 {
 	if (drawArrowShape) {
@@ -77,10 +84,33 @@ void CelestialBody::setRadius(const float newRadius)
 	bodyShape.setRadius(radius);
 }
 
+void CelestialBody::setInitialPosition(const sf::Vector2f& newInitialPosition)
+{
+	initialPosition = newInitialPosition;
+	currentPosition = initialPosition;
+
+	bodyShape.setPosition(currentPosition);
+	arrowShape.setStartPos(currentPosition);
+}
+
+void CelestialBody::setInitialVelocity(const sf::Vector2f& newInitialVelocity)
+{
+	initialVelocity = newInitialVelocity;
+	currentVelocity = initialVelocity;
+
+	arrowShape.setDirection(currentVelocity);
+}
+
+
 void CelestialBody::setColor(const Color& newColor)
 {
 	color = newColor;
 	bodyShape.setFillColor(color.toSFMLColor());
+}
+
+void CelestialBody::clearTrail()
+{
+	trail.clear();
 }
 
 void CelestialBody::markToDelete()
@@ -88,7 +118,8 @@ void CelestialBody::markToDelete()
 	shouldBeDeleted = true;
 }
 
-void CelestialBody::updateDrawablesPosition()
+void CelestialBody::reset()
 {
-	bodyShape.setPosition(currentPosition);
+	currentPosition = initialPosition;
+	currentVelocity = initialVelocity;
 }

@@ -21,8 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{18B19099-6211-4814-BAD5-5490767241E2}</ProjectGuid>
-    <RootNamespace>RocketSimulator</RootNamespace>
+    <RootNamespace>GravitySimulator</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>GravitySimulator</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -155,20 +156,16 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\ArrowShape.cpp" />
-    <ClCompile Include="Source\Body.cpp" />
     <ClCompile Include="Source\CelestialBody.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
-    <ClCompile Include="Source\Rocket.cpp" />
     <ClCompile Include="Source\Universe.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Application.hpp" />
     <ClInclude Include="Include\ArrowShape.hpp" />
-    <ClInclude Include="Include\Body.hpp" />
     <ClInclude Include="Include\CelestialBody.hpp" />
     <ClInclude Include="Include\Color.hpp" />
     <ClInclude Include="Include\Editor.hpp" />
-    <ClInclude Include="Include\Rocket.hpp" />
     <ClInclude Include="Include\Universe.hpp" />
     <ClInclude Include="Include\Utils.hpp" />
   </ItemGroup>

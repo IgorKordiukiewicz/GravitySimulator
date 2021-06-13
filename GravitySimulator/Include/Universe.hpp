@@ -3,7 +3,6 @@
 #include <vector>
 #include "CelestialBody.hpp"
 #include <memory>
-#include "Rocket.hpp"
 
 enum class SimulationState
 {
@@ -23,9 +22,6 @@ public:
 	// Adds a new body to the simulation
 	void createNewBody();
 
-	void createRocket();
-	void removeRocket();
-
 	void setCentralBody(CelestialBody* newCentralBody);
 	void setDrawTrails(bool newValue);
 
@@ -34,13 +30,11 @@ public:
 	void resetSimulation();
 
 	std::vector<CelestialBody>& getCelestialBodies() { return celestialBodies; }
-	Rocket* getRocket() { return rocket.get(); }
 	SimulationState getSimulationState() const { return simulationState; }
 	bool getDrawTrails() const { return drawTrails; }
 
 private:
 	std::vector<CelestialBody> celestialBodies;
-	std::unique_ptr<Rocket> rocket{ nullptr };
 
 	// Gravitational constant
 	const float gravitationalForce = 100000.f;
