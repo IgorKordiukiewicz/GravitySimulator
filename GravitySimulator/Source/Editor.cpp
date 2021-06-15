@@ -4,12 +4,32 @@
 #include "../Include/ArrowShape.hpp"
 #include <iostream>
 #include "../Include/Utils.hpp"
+#include <fstream>
 
 Editor::Editor(sf::RenderWindow& window, Universe& universe)
 	: window(window)
 	, universe(universe)
 {
+	// Load presets
+	std::ifstream file("presets.txt");
+	std::string line;
+	while (std::getline(file, line)) {
+		Preset preset(line);
+		preset.loadFromFile();
+		presets.insert({ line, std::move(preset) });
+	}
+	file.close();
+}
 
+Editor::~Editor()
+{
+	// Save presets
+	std::ofstream file("presets.txt");
+	for (const auto& [presetName, preset] : presets) {
+		preset.saveToFile();
+		file << preset.getName() << '\n';
+	}
+	file.close();
 }
 
 void Editor::update()
@@ -28,13 +48,52 @@ void Editor::update()
 	
 	updateSimulationState();
 
+	// Presets
+	if (universe.getSimulationState() == SimulationState::Reset) {
+		ImGui::PushID(-1);
+		// Save as preset
+		ImGui::InputText("Preset name", presetNameBuffer, 64);
+		ImGui::SameLine();
+		if (ImGui::Button("Save Preset")) {
+			const std::string presetName = presetNameBuffer;
+			// Can't save preset without a name
+			if (!presetName.empty()) {
+				Preset newPreset(presetName, universe.getCelestialBodies());
+				presets.insert({ presetName, std::move(newPreset) });
+			}
+		}
+		
+		const std::string previewText = selectedPresetName.value_or("");
+		// Load from preset
+		if (ImGui::BeginCombo("", previewText.data())) {
+			for (const auto& [presetName, preset] : presets) {
+				bool isSelected = preset.getName() == presetName;
+				if (ImGui::Selectable(presetName.data(), isSelected)) {
+					selectedPresetName = presetName;
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Load Preset")) {
+			if (selectedPresetName.has_value()) {
+				const auto preset = presets.find(selectedPresetName.value())->second;
+				universe.loadFromPreset(preset);
+			}
+		}
+		
+		ImGui::Separator();
+		ImGui::PopID();
+	}
+
 	// Allow to save screenshots when the simulation is paused
 	if (universe.getSimulationState() == SimulationState::Paused) {
 		if (ImGui::Button("Save screenshot")) {
 			sf::Texture texture;
 			texture.create(window.getSize().x, window.getSize().y);
 			texture.update(window);
-			if (texture.copyToImage().saveToFile("screenshot" + std::to_string(screenshotId) + ".png")) {
+			if (texture.copyToImage().saveToFile("Screenshots/screenshot" + std::to_string(screenshotId) + ".png")) {
 				++screenshotId;
 			}
 		}

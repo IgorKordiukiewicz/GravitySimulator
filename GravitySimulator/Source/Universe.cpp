@@ -69,6 +69,15 @@ void Universe::draw(sf::RenderWindow& window)
 	}
 }
 
+void Universe::loadFromPreset(const Preset& preset)
+{
+	celestialBodies.clear();
+	for (const auto& [mass, radius, initialPosition, initialVelocity] : preset.getCelestialBodiesProperties()) {
+		CelestialBody celestialBody(mass, radius, initialPosition, initialVelocity);
+		celestialBodies.push_back(std::move(celestialBody));
+	}
+}
+
 void Universe::createNewBody()
 {
 	// Create new body with some default values	

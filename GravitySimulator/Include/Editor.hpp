@@ -5,11 +5,14 @@
 #include "Universe.hpp"
 #include <optional>
 #include <imgui.h>
+#include "Preset.hpp"
+#include <map>
 
 class Editor
 {
 public:
 	Editor(sf::RenderWindow& window, Universe& universe);
+	~Editor();
 
 	void update();
 
@@ -38,4 +41,8 @@ private:
 	ImFont* font{ nullptr };
 
 	int screenshotId{ 0 };
+
+	char presetNameBuffer[64] = "";
+	std::map<std::string, Preset> presets;
+	std::optional<std::string> selectedPresetName;
 };

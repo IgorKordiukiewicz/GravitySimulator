@@ -159,6 +159,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\CelestialBody.cpp" />
     <ClCompile Include="Source\Editor.cpp" />
+    <ClCompile Include="Source\Preset.cpp" />
     <ClCompile Include="Source\Universe.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,6 +169,7 @@
     <ClInclude Include="Include\CelestialBody.hpp" />
     <ClInclude Include="Include\Color.hpp" />
     <ClInclude Include="Include\Editor.hpp" />
+    <ClInclude Include="Include\Preset.hpp" />
     <ClInclude Include="Include\Universe.hpp" />
     <ClInclude Include="Include\Utils.hpp" />
   </ItemGroup>

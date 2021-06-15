@@ -3,6 +3,7 @@
 #include <vector>
 #include "CelestialBody.hpp"
 #include <memory>
+#include "Preset.hpp"
 
 enum class SimulationState
 {
@@ -18,6 +19,8 @@ public:
 
 	void update(float deltaTime);
 	void draw(sf::RenderWindow& window);
+
+	void loadFromPreset(const Preset& preset);
 
 	// Adds a new body to the simulation
 	void createNewBody();
