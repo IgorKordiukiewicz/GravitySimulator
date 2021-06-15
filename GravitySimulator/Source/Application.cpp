@@ -14,6 +14,11 @@ Application::Application()
 	window.setVerticalSyncEnabled(true);
 	ImGui::SFML::Init(window);
 
+	// Set window icon
+	sf::Image icon;
+	icon.loadFromFile("Resources/icon.png");
+	window.setIcon(64, 64, icon.getPixelsPtr());
+
 	// Add custom font
 	ImGuiIO& io = ImGui::GetIO();
 	auto* font = io.Fonts->AddFontFromFileTTF("Resources/bahnschrift.ttf", 16.f);
