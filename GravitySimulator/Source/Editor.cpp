@@ -12,7 +12,21 @@ Editor::Editor(sf::RenderWindow& window, Universe& universe, PresetManager& pres
 	, universe(universe)
 	, presetManager(presetManager)
 {
-
+	// Find screenshot file with the biggest id, so the next available id is one bigger than it,
+	// so that screenshots are not overwritten
+	auto path = std::filesystem::current_path() / "Screenshots";
+	if (std::filesystem::is_directory(path)) {
+		int biggestScreenshotId{ 0 };
+		for (const auto& it : std::filesystem::directory_iterator(path)) {
+			if (it.path().extension() == ".png") {
+				const auto fileName = it.path().stem().string();
+				const std::string screenshotStr = "screenshot";
+				const int currentScreenshotId = std::stoi(fileName.substr(screenshotStr.size()));
+				biggestScreenshotId = std::max(biggestScreenshotId, currentScreenshotId);
+			}
+		}
+		screenshotId = biggestScreenshotId + 1;
+	}
 }
 
 Editor::~Editor()
@@ -43,6 +57,13 @@ void Editor::update()
 			sf::Texture texture;
 			texture.create(window.getSize().x, window.getSize().y);
 			texture.update(window);
+
+			// Create Screenshots directory if it doesn't exist
+			auto screenshotsPath = std::filesystem::current_path() / "Screenshots";
+			if (!std::filesystem::is_directory(screenshotsPath)) {
+				std::filesystem::create_directory(screenshotsPath);
+			}
+			// Save texture to file
 			if (texture.copyToImage().saveToFile("Screenshots/screenshot" + std::to_string(screenshotId) + ".png")) {
 				++screenshotId;
 			}
@@ -163,8 +184,8 @@ void Editor::updateSimulationState()
 
 void Editor::updatePresets()
 {
-	if (ImGui::CollapsingHeader("Presets")) {
-		if (universe.getSimulationState() == SimulationState::Reset) {
+	if (universe.getSimulationState() == SimulationState::Reset) {
+		if (ImGui::CollapsingHeader("Presets")) {
 			// Save as preset
 			ImGui::InputText("##Preset name", presetNameBuffer, 64);
 			ImGui::SameLine();
@@ -205,9 +226,10 @@ void Editor::updatePresets()
 					selectedPresetName = std::nullopt;
 				}
 			}
-		}
+		}	
+
+		ImGui::Separator();
 	}
-	ImGui::Separator();
 }
 
 void Editor::updateCentralBody()

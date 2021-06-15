@@ -2,6 +2,7 @@
 #include <fstream>
 #include <optional>
 #include <sstream>
+#include <filesystem>
 
 Preset::Preset(const std::string& name)
 	: name(name)
@@ -24,6 +25,12 @@ Preset::Preset(const std::string& name, const std::vector<CelestialBody>& celest
 
 void Preset::loadFromFile()
 {
+	// Create Presets directory if it doesn't exist
+	auto presetsPath = std::filesystem::current_path() / "Presets";
+	if (!std::filesystem::is_directory(presetsPath)) {
+		std::filesystem::create_directory(presetsPath);
+	}
+	
 	std::ifstream file("Presets/" + name + ".preset");
 
 	std::string line;
