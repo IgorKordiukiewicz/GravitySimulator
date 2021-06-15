@@ -5,31 +5,19 @@
 #include <iostream>
 #include "../Include/Utils.hpp"
 #include <fstream>
+#include <filesystem>
 
-Editor::Editor(sf::RenderWindow& window, Universe& universe)
+Editor::Editor(sf::RenderWindow& window, Universe& universe, PresetManager& presetManager)
 	: window(window)
 	, universe(universe)
+	, presetManager(presetManager)
 {
-	// Load presets
-	std::ifstream file("presets.txt");
-	std::string line;
-	while (std::getline(file, line)) {
-		Preset preset(line);
-		preset.loadFromFile();
-		presets.insert({ line, std::move(preset) });
-	}
-	file.close();
+
 }
 
 Editor::~Editor()
 {
-	// Save presets
-	std::ofstream file("presets.txt");
-	for (const auto& [presetName, preset] : presets) {
-		preset.saveToFile();
-		file << preset.getName() << '\n';
-	}
-	file.close();
+	
 }
 
 void Editor::update()
@@ -47,45 +35,7 @@ void Editor::update()
 	ImGui::Begin("Editor");
 	
 	updateSimulationState();
-
-	// Presets
-	if (universe.getSimulationState() == SimulationState::Reset) {
-		ImGui::PushID(-1);
-		// Save as preset
-		ImGui::InputText("Preset name", presetNameBuffer, 64);
-		ImGui::SameLine();
-		if (ImGui::Button("Save Preset")) {
-			const std::string presetName = presetNameBuffer;
-			// Can't save preset without a name
-			if (!presetName.empty()) {
-				Preset newPreset(presetName, universe.getCelestialBodies());
-				presets.insert({ presetName, std::move(newPreset) });
-			}
-		}
-		
-		const std::string previewText = selectedPresetName.value_or("");
-		// Load from preset
-		if (ImGui::BeginCombo("", previewText.data())) {
-			for (const auto& [presetName, preset] : presets) {
-				bool isSelected = preset.getName() == presetName;
-				if (ImGui::Selectable(presetName.data(), isSelected)) {
-					selectedPresetName = presetName;
-				}
-			}
-
-			ImGui::EndCombo();
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("Load Preset")) {
-			if (selectedPresetName.has_value()) {
-				const auto preset = presets.find(selectedPresetName.value())->second;
-				universe.loadFromPreset(preset);
-			}
-		}
-		
-		ImGui::Separator();
-		ImGui::PopID();
-	}
+	updatePresets();
 
 	// Allow to save screenshots when the simulation is paused
 	if (universe.getSimulationState() == SimulationState::Paused) {
@@ -101,7 +51,6 @@ void Editor::update()
 	}
 
 	updateCentralBody();
-
 	updateDrawTrailsOption();
 
 	// Only allow adding new bodies or changing the bodies properties when the simulation is not running
@@ -210,6 +159,55 @@ void Editor::updateSimulationState()
 	}
 
 	ImGui::Separator();
+}
+
+void Editor::updatePresets()
+{
+	if (universe.getSimulationState() == SimulationState::Reset) {
+		// Save as preset
+		ImGui::InputText("##Preset name", presetNameBuffer, 64);
+		ImGui::SameLine();
+		if (ImGui::Button("Save as preset")) {
+			const std::string presetName = presetNameBuffer;
+			// Can't save preset without a name
+			if (!presetName.empty()) {
+				//Preset newPreset(presetName, universe.getCelestialBodies());
+				//presets.insert({ presetName, std::move(newPreset) });
+				presetManager.addNewPreset(presetName, universe.getCelestialBodies());
+			}
+		}
+
+		const std::string previewText = selectedPresetName.value_or("");
+		// Load from preset
+		if (ImGui::BeginCombo("Select preset", previewText.data())) {
+			for (const auto& [presetName, preset] : presetManager.getPresets()) {
+				bool isSelected = preset.getName() == presetName;
+				if (ImGui::Selectable(presetName.data(), isSelected)) {
+					selectedPresetName = presetName;
+				}
+			}
+
+			ImGui::EndCombo();
+		}
+
+		//ImGui::SameLine();
+		if (ImGui::Button("Load from preset")) {
+			if (selectedPresetName.has_value()) {
+				const auto preset = presetManager.getPresets().find(selectedPresetName.value())->second;
+				universe.loadFromPreset(preset);
+			}
+		}
+
+		ImGui::SameLine();
+		if (ImGui::Button("Delete preset")) {
+			if (selectedPresetName.has_value()) {
+				presetManager.removePreset(selectedPresetName.value());
+				selectedPresetName = std::nullopt;
+			}
+		}
+
+		ImGui::Separator();
+	}
 }
 
 void Editor::updateCentralBody()

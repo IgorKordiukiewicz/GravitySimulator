@@ -1,9 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "../Include/Universe.hpp"
-#include "../Include/Editor.hpp"
-#include "../Include/Camera.hpp"
+#include "Universe.hpp"
+#include "Editor.hpp"
+#include "Camera.hpp"
+#include "PresetManager.hpp"
 #include <imgui.h>
 
 class Application
@@ -21,4 +22,5 @@ private:
 	Universe universe;
 	Editor editor;
 	Camera camera;
+	PresetManager presetManager;
 };

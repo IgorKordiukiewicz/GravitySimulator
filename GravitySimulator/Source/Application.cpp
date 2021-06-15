@@ -5,7 +5,7 @@
 #include <iostream>
 
 Application::Application()
-	: editor(window, universe), camera(window, universe)
+	: editor(window, universe, presetManager), camera(window, universe)
 {
 	// Initialize window
 	sf::ContextSettings contextSettings;
@@ -23,6 +23,8 @@ Application::Application()
 
 void Application::run()
 {
+	presetManager.loadPresets();
+	
 	sf::Text fpsText;
 	sf::Font font;
 	font.loadFromFile("Resources/SourceSansPro-ExtraLight.ttf");
@@ -63,6 +65,8 @@ void Application::run()
 	}
 
 	ImGui::SFML::Shutdown();
+
+	presetManager.savePresets();
 }
 
 void Application::processEvents()

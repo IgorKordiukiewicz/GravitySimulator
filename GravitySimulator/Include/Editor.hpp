@@ -3,6 +3,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <vector>
 #include "Universe.hpp"
+#include "PresetManager.hpp"
 #include <optional>
 #include <imgui.h>
 #include <map>
@@ -10,7 +11,7 @@
 class Editor
 {
 public:
-	Editor(sf::RenderWindow& window, Universe& universe);
+	Editor(sf::RenderWindow& window, Universe& universe, PresetManager& presetManager);
 	~Editor();
 
 	void update();
@@ -20,6 +21,7 @@ public:
 private:
 	void grabBody();
 	void updateSimulationState();
+	void updatePresets();
 	void updateCentralBody();
 	void updateDrawTrailsOption();
 	void updateCelestialBodiesProperties();
@@ -27,6 +29,7 @@ private:
 private:
 	sf::RenderWindow& window;
 	Universe& universe;
+	PresetManager& presetManager;
 
 	// Variables for changing the bodies positions or velocities by grabbing their shape or 
 	// their velocity arrow shape and moving it using mouse
@@ -42,6 +45,5 @@ private:
 	int screenshotId{ 0 };
 
 	char presetNameBuffer[64] = "";
-	std::map<std::string, Preset> presets;
 	std::optional<std::string> selectedPresetName;
 };
