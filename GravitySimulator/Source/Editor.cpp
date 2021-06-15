@@ -163,51 +163,51 @@ void Editor::updateSimulationState()
 
 void Editor::updatePresets()
 {
-	if (universe.getSimulationState() == SimulationState::Reset) {
-		// Save as preset
-		ImGui::InputText("##Preset name", presetNameBuffer, 64);
-		ImGui::SameLine();
-		if (ImGui::Button("Save as preset")) {
-			const std::string presetName = presetNameBuffer;
-			// Can't save preset without a name
-			if (!presetName.empty()) {
-				//Preset newPreset(presetName, universe.getCelestialBodies());
-				//presets.insert({ presetName, std::move(newPreset) });
-				presetManager.addNewPreset(presetName, universe.getCelestialBodies());
-			}
-		}
-
-		const std::string previewText = selectedPresetName.value_or("");
-		// Load from preset
-		if (ImGui::BeginCombo("Select preset", previewText.data())) {
-			for (const auto& [presetName, preset] : presetManager.getPresets()) {
-				bool isSelected = preset.getName() == presetName;
-				if (ImGui::Selectable(presetName.data(), isSelected)) {
-					selectedPresetName = presetName;
+	if (ImGui::CollapsingHeader("Presets")) {
+		if (universe.getSimulationState() == SimulationState::Reset) {
+			// Save as preset
+			ImGui::InputText("##Preset name", presetNameBuffer, 64);
+			ImGui::SameLine();
+			if (ImGui::Button("Save as preset")) {
+				const std::string presetName = presetNameBuffer;
+				// Can't save preset without a name
+				if (!presetName.empty()) {
+					presetManager.addNewPreset(presetName, universe.getCelestialBodies());
 				}
 			}
 
-			ImGui::EndCombo();
-		}
+			const std::string previewText = selectedPresetName.value_or("");
+			// Select preset
+			if (ImGui::BeginCombo("Select preset", previewText.data())) {
+				for (const auto& [presetName, preset] : presetManager.getPresets()) {
+					bool isSelected = preset.getName() == presetName;
+					if (ImGui::Selectable(presetName.data(), isSelected)) {
+						selectedPresetName = presetName;
+					}
+				}
 
-		//ImGui::SameLine();
-		if (ImGui::Button("Load from preset")) {
-			if (selectedPresetName.has_value()) {
-				const auto preset = presetManager.getPresets().find(selectedPresetName.value())->second;
-				universe.loadFromPreset(preset);
+				ImGui::EndCombo();
+			}
+
+			// Load from preset
+			if (ImGui::Button("Load from preset")) {
+				if (selectedPresetName.has_value()) {
+					const auto preset = presetManager.getPresets().find(selectedPresetName.value())->second;
+					universe.loadFromPreset(preset);
+				}
+			}
+
+			// Delete the currently selected preset
+			ImGui::SameLine();
+			if (ImGui::Button("Delete preset")) {
+				if (selectedPresetName.has_value()) {
+					presetManager.removePreset(selectedPresetName.value());
+					selectedPresetName = std::nullopt;
+				}
 			}
 		}
-
-		ImGui::SameLine();
-		if (ImGui::Button("Delete preset")) {
-			if (selectedPresetName.has_value()) {
-				presetManager.removePreset(selectedPresetName.value());
-				selectedPresetName = std::nullopt;
-			}
-		}
-
-		ImGui::Separator();
 	}
+	ImGui::Separator();
 }
 
 void Editor::updateCentralBody()

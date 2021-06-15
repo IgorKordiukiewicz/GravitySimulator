@@ -13,6 +13,12 @@ Universe::Universe()
 
 void Universe::update(float deltaTime)
 {
+	// When the application freezes for a bit or the window is moved by the user,
+	// the delta time is very high and it causes the simulation to break
+	if (deltaTime > 0.05f) {
+		return;
+	}
+	
 	// Check for potential bodies to delete
 	for (auto i = celestialBodies.size(); i--;) {
 		if (celestialBodies[i].getShouldBeDeleted()) {

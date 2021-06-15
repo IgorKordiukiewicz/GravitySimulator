@@ -34,7 +34,6 @@ void Preset::loadFromFile()
 	std::vector<sf::Vector2f> initialVelocities;
 	while (std::getline(file, line)) {
 		std::istringstream iss(line);
-
 		// mass
 		if (propertyCounter == 0) {
 			float mass;
@@ -66,6 +65,7 @@ void Preset::loadFromFile()
 		}
 	}
 
+	// Create celestial bodies properties from the file data
 	const int celestialBodiesCount = masses.size();
 	for (int i = 0; i < celestialBodiesCount; ++i) {
 		CelestialBodyProperties celestialBodyProperties;
