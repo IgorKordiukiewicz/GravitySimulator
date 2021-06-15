@@ -25,12 +25,6 @@ void Application::run()
 {
 	presetManager.loadPresets();
 	
-	sf::Text fpsText;
-	sf::Font font;
-	font.loadFromFile("Resources/SourceSansPro-ExtraLight.ttf");
-	fpsText.setFont(font);
-	fpsText.setCharacterSize(40);
-	
 	sf::Clock clock;
 	// Main loop
 	while (window.isOpen()) {
@@ -45,20 +39,10 @@ void Application::run()
 
 		window.clear();
 
-		// Calculate fps
-		const int fps = static_cast<int>(1.f / deltaTime);
-		fpsText.setString(std::to_string(fps));
-
 		// Render
 		universe.draw(window);
 
 		editor.update();
-
-		// Reset view to draw the text
-		auto view = window.getView();
-		window.setView(window.getDefaultView());
-		window.draw(fpsText);
-		window.setView(view);
 
 		ImGui::SFML::Render(window);
 		window.display();
