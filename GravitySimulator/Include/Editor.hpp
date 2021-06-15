@@ -5,7 +5,6 @@
 #include "Universe.hpp"
 #include <optional>
 #include <imgui.h>
-#include "Preset.hpp"
 #include <map>
 
 class Editor

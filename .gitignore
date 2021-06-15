@@ -1,3 +1,5 @@
+*.preset
+GravitySimulator/presets.txt
 *.png
 *.ttf
 
