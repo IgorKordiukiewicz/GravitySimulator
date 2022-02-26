@@ -8,7 +8,7 @@ class PresetManager
 {
 public:
 	void loadPresets();
-	void savePresets();
+	void savePresets() const;
 
 	void addNewPreset(const std::string& name, const std::vector<CelestialBody>& celestialBodies);
 	void removePreset(const std::string& name);

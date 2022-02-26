@@ -10,10 +10,10 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	, initialVelocity(initialVelocity)
 	, arrowShape(initialPosition, initialVelocity)
 	, id(nextBodyId++)
-{	
+{
 	currentPosition = initialPosition;
 	currentVelocity = initialVelocity;
-	
+
 	// Setup the body shape
 	setRadius(radius);
 	bodyShape.setPosition(initialPosition);
@@ -27,36 +27,36 @@ void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies
 	if (destroyed) {
 		return;
 	}
-	
-	for (const auto& otherBody : otherBodies) {
+
+	for (const CelestialBody& otherBody : otherBodies) {
 		if (otherBody.getId() == id || otherBody.isDestroyed()) {
 			continue;
 		}
 
 		// Calculate velocity using Newton's law of universal gravitation
-		const float dist = utils::getDistanceBetweenPoints(otherBody.getCurrentPosition(), currentPosition);
-		const float distSquared = dist * dist;
-		const sf::Vector2f forceDirection = utils::getNormalizedVector(sf::Vector2f(otherBody.getCurrentPosition() - currentPosition));
-		const sf::Vector2f force = forceDirection * gravitationalForce * mass * otherBody.getMass() /  distSquared;
-		const sf::Vector2f acceleration = force / mass;
+		const float dist{ utils::getDistanceBetweenPoints(otherBody.getCurrentPosition(), currentPosition) };
+		const float distSquared{ dist * dist };
+		const sf::Vector2f forceDirection{ utils::getNormalizedVector(sf::Vector2f(otherBody.getCurrentPosition() - currentPosition)) };
+		const sf::Vector2f force{ forceDirection * gravitationalForce * mass * otherBody.getMass() / distSquared };
+		const sf::Vector2f acceleration{ force / mass };
 		currentVelocity += acceleration * deltaTime;
 	}
 }
 
 void CelestialBody::updatePosition(float deltaTime)
-{	
+{
 	if (destroyed) {
 		return;
 	}
-	
+
 	currentPosition += currentVelocity * deltaTime;
 	bodyShape.setPosition(currentPosition);
 
 	// Update trail
 	if (trail.getVertexCount() >= 1) {
 		// Compare body and last trail point positions casted to int vector to avoid unnecessary trail points
-		const sf::Vector2i posInt(currentPosition);
-		const sf::Vector2i lastTrailPosInt(trail[trail.getVertexCount() - 1].position);
+		const sf::Vector2i posInt{ currentPosition };
+		const sf::Vector2i lastTrailPosInt{ trail[trail.getVertexCount() - 1].position };
 		if (posInt != lastTrailPosInt) {
 			trail.append({ currentPosition, bodyShape.getFillColor() });
 		}
@@ -66,17 +66,17 @@ void CelestialBody::updatePosition(float deltaTime)
 	}
 }
 
-void CelestialBody::drawTrail(sf::RenderWindow& window)
-{	
+void CelestialBody::drawTrail(sf::RenderWindow& window) const
+{
 	window.draw(trail);
 }
 
-void CelestialBody::draw(sf::RenderWindow& window, bool drawArrowShape)
+void CelestialBody::draw(sf::RenderWindow& window, bool drawArrowShape) const
 {
 	if (destroyed) {
 		return;
 	}
-	
+
 	if (drawArrowShape) {
 		window.draw(arrowShape);
 	}

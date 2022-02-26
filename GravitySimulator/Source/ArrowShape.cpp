@@ -7,7 +7,7 @@ ArrowShape::ArrowShape(const sf::Vector2f& startPos, const sf::Vector2f& endPos)
 {
 	lineVertices.setPrimitiveType(sf::PrimitiveType::Lines);
 	headVertices.setPrimitiveType(sf::PrimitiveType::Triangles);
-	
+
 	calculateVertices();
 }
 
@@ -36,22 +36,22 @@ void ArrowShape::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void ArrowShape::calculateVertices()
 {
-	const sf::Vector2f endPos = startPos + direction;
-	
+	const sf::Vector2f endPos{ startPos + direction };
+
 	lineVertices.clear();
 	lineVertices.append(startPos);
 	lineVertices.append(endPos);
 
 	// Calculate the head triangle vertices
-	const sf::Vector2f dirVec = endPos - startPos;
-	const float dirVecLength = sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y);
-	const sf::Vector2f dirVecNormalized = -dirVec / dirVecLength;
-	const sf::Vector2f headBaseCenter = endPos + dirVecNormalized * headHeight;
-	const sf::Vector2f dirVecOrth1 = { -dirVecNormalized.y, dirVecNormalized.x };
-	const sf::Vector2f dirVecOrth2 = { dirVecNormalized.y, -dirVecNormalized.x };
-	const float halfHeadWidth = headWidth / 2.f;
-	const sf::Vector2f headPoint1 = headBaseCenter + dirVecOrth1 * halfHeadWidth;
-	const sf::Vector2f headPoint2 = headBaseCenter + dirVecOrth2 * halfHeadWidth;
+	const sf::Vector2f dirVec{ endPos - startPos };
+	const float dirVecLength{ sqrt(dirVec.x * dirVec.x + dirVec.y * dirVec.y) };
+	const sf::Vector2f dirVecNormalized{ -dirVec / dirVecLength };
+	const sf::Vector2f headBaseCenter{ endPos + dirVecNormalized * headHeight };
+	const sf::Vector2f dirVecOrth1{ -dirVecNormalized.y, dirVecNormalized.x };
+	const sf::Vector2f dirVecOrth2{ dirVecNormalized.y, -dirVecNormalized.x };
+	const float halfHeadWidth{ headWidth / 2.f };
+	const sf::Vector2f headPoint1{ headBaseCenter + dirVecOrth1 * halfHeadWidth };
+	const sf::Vector2f headPoint2{ headBaseCenter + dirVecOrth2 * halfHeadWidth };
 
 	headVertices.clear();
 	headVertices.append(headPoint1);

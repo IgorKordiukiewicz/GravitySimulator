@@ -12,7 +12,6 @@ class Editor
 {
 public:
 	Editor(sf::RenderWindow& window, Universe& universe, PresetManager& presetManager);
-	~Editor();
 
 	void update();
 
@@ -31,7 +30,7 @@ private:
 	Universe& universe;
 	PresetManager& presetManager;
 
-	// Variables for changing the bodies positions or velocities by grabbing their shape or 
+	// Variables for changing the bodies positions or velocities by grabbing their shape or
 	// their velocity arrow shape and moving it using mouse
 	CelestialBody* grabbedBody{ nullptr };
 	// Whether the grabbed shape was the body's shape or its velocity arrow
@@ -44,6 +43,6 @@ private:
 
 	int screenshotId{ 0 };
 
-	char presetNameBuffer[64] = "";
+	char presetNameBuffer[64]{ "" };
 	std::optional<std::string> selectedPresetName;
 };

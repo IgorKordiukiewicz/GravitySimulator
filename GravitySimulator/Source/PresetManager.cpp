@@ -5,20 +5,20 @@
 void PresetManager::loadPresets()
 {
 	presets.clear();
-	std::ifstream file("presets.txt");
+	std::ifstream file{ "presets.txt" };
 	std::string line;
 	while (std::getline(file, line)) {
-		Preset preset(line);
+		Preset preset{ line };
 		preset.loadFromFile();
 		presets.insert({ line, std::move(preset) });
 	}
 	file.close();
 }
 
-void PresetManager::savePresets()
+void PresetManager::savePresets() const
 {
 	// Delete already existing presets files
-	auto path = std::filesystem::current_path() / "Presets";
+	auto path{ std::filesystem::current_path() / "Presets" };
 	for (const auto& it : std::filesystem::directory_iterator(path)) {
 		if (it.path().extension() == ".preset") {
 			std::filesystem::remove(it.path());
@@ -26,7 +26,7 @@ void PresetManager::savePresets()
 	}
 
 	// Save presets
-	std::ofstream file("presets.txt");
+	std::ofstream file{ "presets.txt" };
 	for (const auto& [presetName, preset] : presets) {
 		preset.saveToFile();
 		file << preset.getName() << '\n';

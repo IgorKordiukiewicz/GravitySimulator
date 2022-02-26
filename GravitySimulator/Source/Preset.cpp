@@ -12,26 +12,26 @@ Preset::Preset(const std::string& name)
 Preset::Preset(const std::string& name, const std::vector<CelestialBody>& celestialBodies)
 	: name(name)
 {
-	for (const auto& celestialBody : celestialBodies) {
+	for (const CelestialBody& celestialBody : celestialBodies) {
 		CelestialBodyProperties celestialBodyProperties;
 		celestialBodyProperties.mass = celestialBody.getMass();
 		celestialBodyProperties.radius = celestialBody.getRadius();
 		celestialBodyProperties.initialPosition = celestialBody.getInitialPosition();
 		celestialBodyProperties.initialVelocity = celestialBody.getInitialVelocity();
 
-		celestialBodiesProperties.push_back(celestialBodyProperties);
+		celestialBodiesProperties.push_back(std::move(celestialBodyProperties));
 	}
 }
 
 void Preset::loadFromFile()
 {
 	// Create Presets directory if it doesn't exist
-	auto presetsPath = std::filesystem::current_path() / "Presets";
+	auto presetsPath{ std::filesystem::current_path() / "Presets" };
 	if (!std::filesystem::is_directory(presetsPath)) {
 		std::filesystem::create_directory(presetsPath);
 	}
-	
-	std::ifstream file("Presets/" + name + ".preset");
+
+	std::ifstream file{ "Presets/" + name + ".preset" };
 
 	std::string line;
 	int propertyCounter{ 0 };
@@ -73,15 +73,14 @@ void Preset::loadFromFile()
 	}
 
 	// Create celestial bodies properties from the file data
-	const int celestialBodiesCount = masses.size();
-	for (int i = 0; i < celestialBodiesCount; ++i) {
+	for (int i{ 0 }; i < masses.size(); ++i) {
 		CelestialBodyProperties celestialBodyProperties;
 		celestialBodyProperties.mass = masses[i];
 		celestialBodyProperties.radius = radiuses[i];
 		celestialBodyProperties.initialPosition = initialPositions[i];
 		celestialBodyProperties.initialVelocity = initialVelocities[i];
 
-		celestialBodiesProperties.push_back(celestialBodyProperties);
+		celestialBodiesProperties.push_back(std::move(celestialBodyProperties));
 	}
 
 	file.close();
@@ -89,9 +88,9 @@ void Preset::loadFromFile()
 
 void Preset::saveToFile() const
 {
-	std::ofstream file("Presets/" + name + ".preset");
+	std::ofstream file{ "Presets/" + name + ".preset" };
 
-	for (const auto& celestialBodyProperties : celestialBodiesProperties) {
+	for (const CelestialBodyProperties& celestialBodyProperties : celestialBodiesProperties) {
 		file << celestialBodyProperties.mass << '\n';
 		file << celestialBodyProperties.radius << '\n';
 		file << celestialBodyProperties.initialPosition.x << " " << celestialBodyProperties.initialPosition.y << '\n';

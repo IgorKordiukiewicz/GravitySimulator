@@ -11,13 +11,12 @@ class CelestialBody
 {
 public:
 	CelestialBody(const float mass, const float radius, const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity);
-	~CelestialBody() = default;
 
 	void updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime);
 	void updatePosition(float deltaTime);
 
-	void drawTrail(sf::RenderWindow& window);
-	void draw(sf::RenderWindow& window, bool drawArrowShape);
+	void drawTrail(sf::RenderWindow& window) const;
+	void draw(sf::RenderWindow& window, bool drawArrowShape) const;
 
 	void setMass(const float newMass);
 	void setRadius(const float newRadius);
@@ -47,8 +46,8 @@ public:
 	const ArrowShape& getVelocityArrowShape() const { return arrowShape; }
 
 private:
-	float mass{ 1.0 };
-	float radius{ 1.0 };
+	float mass{ 1.0f };
+	float radius{ 1.0f };
 	sf::Vector2f initialPosition;
 	sf::Vector2f initialVelocity;
 	sf::Vector2f currentPosition;
@@ -66,5 +65,5 @@ private:
 	bool destroyed{ false };
 	// The id is assigned on creation, and nextBodyId is incremented
 	int id{ 0 };
-	inline static int nextBodyId = 1;
+	inline static int nextBodyId{ 1 };
 };

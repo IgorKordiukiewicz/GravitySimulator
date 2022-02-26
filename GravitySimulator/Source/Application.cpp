@@ -29,11 +29,11 @@ Application::Application()
 void Application::run()
 {
 	presetManager.loadPresets();
-	
+
 	sf::Clock clock;
 	// Main loop
 	while (window.isOpen()) {
-		const float deltaTime = clock.restart().asSeconds();
+		const float deltaTime{ clock.restart().asSeconds() };
 
 		processEvents();
 

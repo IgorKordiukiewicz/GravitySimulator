@@ -13,9 +13,9 @@ Camera::Camera(sf::RenderWindow& window, Universe& universe)
 
 void Camera::update(float deltaTime)
 {
-	const auto simulationState = universe.getSimulationState();
+	const SimulationState simulationState{ universe.getSimulationState() };
 	// Camera is unlocked only when the simulation is either running or paused and central body is null
-	bool unlocked = !universe.getCentralBody() && (simulationState == SimulationState::Running || simulationState == SimulationState::Paused);
+	bool unlocked{ !universe.getCentralBody() && (simulationState == SimulationState::Running || simulationState == SimulationState::Paused) };
 
 	// If simulation state just changed to running from reset, reset the unlocked view to the default view
 	if (lastSimulationState == SimulationState::Reset && simulationState == SimulationState::Running) {
@@ -23,7 +23,7 @@ void Camera::update(float deltaTime)
 		//unlockedView.setSize(unlockedView.getSize() * zoom);
 	}
 	lastSimulationState = simulationState;
-	
+
 	// Allow camera movement only if unlocked
 	if (unlocked) {
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
@@ -45,10 +45,10 @@ void Camera::update(float deltaTime)
 		window.setView(unlockedView);
 	}
 	else {
-		CelestialBody* centralBody = universe.getCentralBody();
+		CelestialBody* centralBody{ universe.getCentralBody() };
 		// Camera locked and central body is set - follow the central body
 		if (centralBody) {
-			auto view = window.getView();
+			sf::View view{ window.getView() };
 			view.setCenter(centralBody->getCurrentPosition());
 			window.setView(view);
 		}
@@ -59,7 +59,7 @@ void Camera::update(float deltaTime)
 	}
 
 	// Apply zoom to the view
-	auto zoomedView = window.getView();
+	sf::View zoomedView{ window.getView() };
 	zoomedView.setSize(window.getDefaultView().getSize() * zoom);
 	window.setView(zoomedView);
 }

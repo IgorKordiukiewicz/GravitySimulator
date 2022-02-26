@@ -27,5 +27,5 @@ private:
 
 	float moveSpeed{ 100.f };
 	float zoomSpeed{ 0.05f };
-	float zoom = 1.f;
+	float zoom{ 1.f };
 };

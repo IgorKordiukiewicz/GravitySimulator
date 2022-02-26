@@ -18,7 +18,7 @@ public:
 	Universe();
 
 	void update(float deltaTime);
-	void draw(sf::RenderWindow& window);
+	void draw(sf::RenderWindow& window) const;
 
 	void loadFromPreset(const Preset& preset);
 
@@ -41,7 +41,7 @@ private:
 	std::vector<CelestialBody> celestialBodies;
 
 	// Gravitational constant
-	const float gravitationalForce = 100000.f;
+	const float gravitationalForce{ 100000.f };
 
 	SimulationState simulationState{ SimulationState::Reset };
 
