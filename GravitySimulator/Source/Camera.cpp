@@ -67,11 +67,11 @@ void Camera::update(float deltaTime)
 void Camera::zoomIn()
 {
 	zoom -= zoomSpeed;
-	zoom = std::clamp(zoom, 0.f, 10.f);
+	zoom = std::clamp(zoom, 0.f, maxZoom);
 }
 
 void Camera::zoomOut()
 {
 	zoom += zoomSpeed;
-	zoom = std::clamp(zoom, 0.f, 10.f);
+	zoom = std::clamp(zoom, 0.f, maxZoom);
 }

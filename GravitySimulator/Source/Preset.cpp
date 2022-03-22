@@ -72,6 +72,7 @@ void Preset::loadFromFile()
 		}
 	}
 
+	celestialBodiesProperties.clear();
 	// Create celestial bodies properties from the file data
 	for (int i{ 0 }; i < masses.size(); ++i) {
 		CelestialBodyProperties celestialBodyProperties;

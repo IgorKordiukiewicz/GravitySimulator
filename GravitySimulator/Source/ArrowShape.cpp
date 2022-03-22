@@ -2,8 +2,8 @@
 #include <SFML/Graphics.hpp>
 
 ArrowShape::ArrowShape(const sf::Vector2f& startPos, const sf::Vector2f& endPos)
-	: startPos(startPos)
-	, direction(endPos)
+	: startPos{ startPos }
+	, direction{ endPos }
 {
 	lineVertices.setPrimitiveType(sf::PrimitiveType::Lines);
 	headVertices.setPrimitiveType(sf::PrimitiveType::Triangles);

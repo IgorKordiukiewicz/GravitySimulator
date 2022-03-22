@@ -22,6 +22,16 @@ CelestialBody::CelestialBody(const float mass, const float radius, const sf::Vec
 	trail.setPrimitiveType(sf::LineStrip);
 }
 
+CelestialBody::CelestialBody(const CelestialBody& celestialBody)
+	: CelestialBody{ celestialBody.mass, celestialBody.radius, celestialBody.initialPosition, celestialBody.initialVelocity }
+{}
+
+CelestialBody& CelestialBody::operator=(const CelestialBody& celestialBody)
+{
+	CelestialBody newCelestialBody{ celestialBody };
+	return newCelestialBody;
+}
+
 void CelestialBody::updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime)
 {
 	if (destroyed) {

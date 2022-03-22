@@ -15,7 +15,7 @@ namespace utils
 	sf::Vector2f getNormalizedVector(const sf::Vector2<T>& vec)
 	{
 		const float vecLength = getVectorLength(vec);
-		return sf::Vector2f(static_cast<float>(vec.x) / vecLength, static_cast<float>(vec.y) / vecLength);
+		return (vecLength != 0.f ? sf::Vector2f(static_cast<float>(vec.x) / vecLength, static_cast<float>(vec.y) / vecLength) : sf::Vector2f{ 0.f, 0.f });
 	}
 
 	template<typename T>

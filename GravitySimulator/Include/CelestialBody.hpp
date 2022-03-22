@@ -11,6 +11,11 @@ class CelestialBody
 {
 public:
 	CelestialBody(const float mass, const float radius, const sf::Vector2f& initialPosition, const sf::Vector2f& initialVelocity);
+	CelestialBody(const CelestialBody& celestialBody);
+	CelestialBody& operator=(const CelestialBody& celestialBody);
+	CelestialBody(CelestialBody&&) = default;
+	CelestialBody& operator=(CelestialBody&&) = default;
+	~CelestialBody() = default;
 
 	void updateVelocity(const std::vector<CelestialBody>& otherBodies, const float gravitationalForce, float deltaTime);
 	void updatePosition(float deltaTime);

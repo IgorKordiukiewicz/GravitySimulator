@@ -162,6 +162,13 @@
     <ClCompile Include="Source\Preset.cpp" />
     <ClCompile Include="Source\PresetManager.cpp" />
     <ClCompile Include="Source\Universe.cpp" />
+    <ClCompile Include="Tests\ArrowShapeTest.cpp" />
+    <ClCompile Include="Tests\CelestialBodyTest.cpp" />
+    <ClCompile Include="Tests\ColorTest.cpp" />
+    <ClCompile Include="Tests\PresetManagerTest.cpp" />
+    <ClCompile Include="Tests\PresetTest.cpp" />
+    <ClCompile Include="Tests\UniverseTest.cpp" />
+    <ClCompile Include="Tests\UtilsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Application.hpp" />
